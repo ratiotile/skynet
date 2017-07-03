@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <set>
 #include "Interface.h"
 
 class RegionClass;

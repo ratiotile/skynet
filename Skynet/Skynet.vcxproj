@@ -113,7 +113,7 @@ copy "..\bwapi.ini" "%25BWAPIData%25"
     </ClCompile>
     <Link>
       <AdditionalDependencies>BWAPI.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(BOOST_DIR)\lib\;$(BWAPI_DIR)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(BOOST_DIR)\lib\;$(BWAPI_DIR)\lib\;G:\Libraries\boost\boost_1_62_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>

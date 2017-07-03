@@ -19,7 +19,7 @@ BuildingPlacerClass::BuildingPlacerClass()
 
 void BuildingPlacerClass::calculateReservations()
 {
-	const BWAPI::UnitType &centerType = BWAPI::Broodwar->self()->getRace().getCenter();
+	const BWAPI::UnitType &centerType = BWAPI::Broodwar->self()->getRace().getResourceDepot();
 	const BWAPI::UnitType &refineryType = BWAPI::Broodwar->self()->getRace().getRefinery();
 
 	// first reserve all wall positions
@@ -855,7 +855,7 @@ void BuildingPlacerClass::rememberBestExpandLocation(Base base, Base& bestBase, 
 		if(!isConnected)
 			return;
 
-		if(isLocationBuildable(base->getCenterBuildLocation(), BWAPI::Broodwar->self()->getRace().getCenter()))
+		if(isLocationBuildable(base->getCenterBuildLocation(), BWAPI::Broodwar->self()->getRace().getResourceDepot()))
 		{
 			for each(Base myBase in BaseTracker::Instance().getPlayerBases())
 			{

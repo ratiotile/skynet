@@ -155,6 +155,6 @@ void ExpansionManagerClass::updateExpands()
 	if(ResourceManager::Instance().isSaturated() && !unstartedTasks)
 	{
 		LOGMESSAGE(String_Builder() << "Expanded because im saturated.");
-		mExpandTasks.push_front(TaskManager::Instance().build(BWAPI::Broodwar->self()->getRace().getCenter(), TaskType::Expansion, BuildingLocation::Expansion));
+		mExpandTasks.push_front(TaskManager::Instance().build(BWAPI::Broodwar->self()->getRace().getResourceDepot(), TaskType::Expansion, BuildingLocation::Expansion));
 	}
 }

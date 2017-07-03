@@ -1,4 +1,5 @@
 #include "TerrainAnaysis.h"
+#include <BWAPI.h>
 
 #include "UnitHelper.h"
 #include "MapHelper.h"
@@ -548,10 +549,10 @@ public:
 			int uRight      = resourcePosition.x + resourceType.dimensionRight() + 1;
 			int uBottom     = resourcePosition.y + resourceType.dimensionDown() + 1;
 
-			int targLeft    = tx - BWAPI::Broodwar->self()->getRace().getCenter().dimensionLeft();
-			int targTop     = ty - BWAPI::Broodwar->self()->getRace().getCenter().dimensionUp();
-			int targRight   = tx + BWAPI::Broodwar->self()->getRace().getCenter().dimensionRight() + 1;
-			int targBottom  = ty + BWAPI::Broodwar->self()->getRace().getCenter().dimensionDown() + 1;
+			int targLeft    = tx - BWAPI::Broodwar->self()->getRace().getResourceDepot().dimensionLeft();
+			int targTop     = ty - BWAPI::Broodwar->self()->getRace().getResourceDepot().dimensionUp();
+			int targRight   = tx + BWAPI::Broodwar->self()->getRace().getResourceDepot().dimensionRight() + 1;
+			int targBottom  = ty + BWAPI::Broodwar->self()->getRace().getResourceDepot().dimensionDown() + 1;
 
 			int xDist = uLeft - targRight;
 			if(xDist < 0)
