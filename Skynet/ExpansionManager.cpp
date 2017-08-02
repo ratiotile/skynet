@@ -28,9 +28,9 @@ void ExpansionManagerClass::update()
 void ExpansionManagerClass::updateRefineries()
 {
 	int refNeeded = 0;
-	for each(Base base in BaseTracker::Instance().getActiveBases(true))
+	for (Base base : BaseTracker::Instance().getActiveBases(true))
 	{
-		if(base->getActivateTime() < unsigned int(BWAPI::Broodwar->getFrameCount() + BWAPI::Broodwar->self()->getRace().getRefinery().buildTime()))
+            if(base->getActivateTime() < unsigned(BWAPI::Broodwar->getFrameCount() + BWAPI::Broodwar->self()->getRace().getRefinery().buildTime()))
 			refNeeded += base->getGeysers().size();
 	}
 
@@ -75,14 +75,14 @@ void ExpansionManagerClass::updateDefense()
 		int defensesNeeded = 0;
 		int neededPerBase = PlayerTracker::Instance().isEnemyRace(BWAPI::Races::Zerg) ? 4 : 2;
 
-		for each(Base base in myBases)
+		for (Base base : myBases)
 		{
 			if(base->getMinerals().empty())
 				continue;
 
 			bool hasPylon = defenseType.requiresPsi() ? false : true;
 			int thisCount = 0;
-			for each(Unit building in base->getBuildings())
+			for (Unit building : base->getBuildings())
 			{
 				if(building->getType() == defenseType)
 					++thisCount;

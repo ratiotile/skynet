@@ -40,6 +40,6 @@ private:
 
 	std::vector<Requirement> mOtherRequirements;
 
-	// ass units are reserved in slots, they need to be calculated recursively so keep them separated
+	// ass units are reserved : slots, they need to be calculated recursively so keep them separated
 	std::vector<Requirement> mUnitRequirements;
 };

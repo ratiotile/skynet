@@ -5,7 +5,7 @@
 
 void BorderTrackerClass::onBegin()
 {
-	for each(Region region in TerrainAnaysis::Instance().getRegions())
+	for (Region region : TerrainAnaysis::Instance().getRegions())
 	{
 		if(region->getSize() > 100000)
 			mLargeRegions.insert(region);
@@ -25,7 +25,7 @@ void BorderTrackerClass::update()
 
 	if(mShowDebugInfo)
 	{
-		for each(Region region in mLargeRegions)
+		for (Region region : mLargeRegions)
 		{
 			region->draw(BWAPI::Colors::Red);
 		}
@@ -59,7 +59,7 @@ void BorderTrackerClass::recalculateBorders()
 	std::map<Region, int> regionTech;
 
 	//Add all my regions to the set
-	for each(Base base in mMyBases)
+	for (Base base : mMyBases)
 	{
 		if(mLargeRegions.count(base->getRegion()) == 0)
 		{
@@ -70,7 +70,7 @@ void BorderTrackerClass::recalculateBorders()
 	}
 
 	//Add all enemy regions to the set
-	for each(Base base in mEnemyBases)
+	for (Base base : mEnemyBases)
 	{
 		if(mLargeRegions.count(base->getRegion()) == 0)
 		{
@@ -89,22 +89,22 @@ void BorderTrackerClass::recalculateBorders()
 			exploring = false;
 
 			//Go through the regions
-			for each(Region region in TerrainAnaysis::Instance().getRegions())
+			for (Region region : TerrainAnaysis::Instance().getRegions())
 			{
-				for each(Chokepoint chokepoint in region->getChokepoints())
+				for (Chokepoint chokepoint : region->getChokepoints())
 				{
 					Region secondRegion = chokepoint->getRegions().first;
 					if(region == secondRegion)
 						secondRegion = chokepoint->getRegions().second;
 
-					//if this region is in the set and the connected region cannot be reached by the enemy, it can be considered ours.
+					//if this region is : the set and the connected region cannot be reached by the enemy, it can be considered ours.
 					if(canReachSelf.count(region) != 0 && mEnemyRegions.count(secondRegion) == 0 && canReachSelf.count(secondRegion) == 0)
 					{
 						canReachSelf.insert(secondRegion);
 						exploring = true;
 					}
 
-					//if this region is in the set and the connected region cannot be reached by me, it can be considered the enemies.
+					//if this region is : the set and the connected region cannot be reached by me, it can be considered the enemies.
 					if(canReachEnemy.count(region) != 0 && mMyRegions.count(secondRegion) == 0 && canReachEnemy.count(secondRegion) == 0)
 					{
 						canReachEnemy.insert(secondRegion);
@@ -115,7 +115,7 @@ void BorderTrackerClass::recalculateBorders()
 		}
 	}
 
-	for each(Region region in TerrainAnaysis::Instance().getRegions())
+	for (Region region : TerrainAnaysis::Instance().getRegions())
 	{
 		//if we can reach this region and the enemy can't, it can be ours
 		if(canReachSelf.count(region) != 0 && canReachEnemy.count(region) == 0)
@@ -134,9 +134,9 @@ void BorderTrackerClass::recalculateBorders()
 	}
 
 	//any chokepoints that dont straddle 2 regions are defense chokepoints
-	for each(Region region in mMyRegions)
+	for (Region region : mMyRegions)
 	{
-		for each(Chokepoint chokepoint in region->getChokepoints())
+		for (Chokepoint chokepoint : region->getChokepoints())
 		{
 			if(mMyBorder.count(chokepoint) == 0)
 				mMyBorder.insert(chokepoint);
@@ -146,7 +146,7 @@ void BorderTrackerClass::recalculateBorders()
 	}
 
 	std::map<Chokepoint, int> borderChokeTech;
-	for each(Chokepoint chokepoint in mMyBorder)
+	for (Chokepoint chokepoint : mMyBorder)
 	{
 		Region startRegion = chokepoint->getRegions().first;
 		if(mMyRegions.count(startRegion) == 0)
@@ -164,7 +164,7 @@ void BorderTrackerClass::recalculateBorders()
 
 			controlledAreaTech += regionTech[*it];
 
-			for each(Chokepoint connectedChoke in (*it)->getChokepoints())
+			for (Chokepoint connectedChoke : (*it)->getChokepoints())
 			{
 				if(mMyBorder.count(connectedChoke) != 0)
 					continue;
@@ -183,9 +183,9 @@ void BorderTrackerClass::recalculateBorders()
 		borderChokeTech[chokepoint] = controlledAreaTech;
 	}
 
-	for each(Region region in mEnemyRegions)
+	for (Region region : mEnemyRegions)
 	{
-		for each(Chokepoint chokepoint in region->getChokepoints())
+		for (Chokepoint chokepoint : region->getChokepoints())
 		{
 			if (mEnemyBorder.count(chokepoint) == 0)
 				mEnemyBorder.insert(chokepoint);
@@ -195,7 +195,7 @@ void BorderTrackerClass::recalculateBorders()
 	}
 
 	mMyForwardBorder = mMyBorder;
-	for each(Chokepoint chokepoint in mMyBorder)
+	for (Chokepoint chokepoint : mMyBorder)
 	{
 		mBorderPositions[PositionType::DefenseChokepoint].insert(BorderPosition(PositionType::DefenseChokepoint, chokepoint));
 
@@ -206,7 +206,7 @@ void BorderTrackerClass::recalculateBorders()
 			mBorderPositions[PositionType::TechDefenseChokepoint].insert(BorderPosition(PositionType::TechDefenseChokepoint, chokepoint));
 	}
 
-	for each(Chokepoint chokepoint in mEnemyBorder)
+	for (Chokepoint chokepoint : mEnemyBorder)
 	{
 		mBorderPositions[PositionType::EnemyChokepoint].insert(BorderPosition(PositionType::EnemyChokepoint, chokepoint));
 	}
@@ -218,7 +218,7 @@ void BorderTrackerClass::recalculateBorders()
 		{
 			expanding = false;
 
-			for each(Chokepoint chokepoint in mMyForwardBorder)
+			for (Chokepoint chokepoint : mMyForwardBorder)
 			{
 				//get the region the otherside of this chokepoint
 				Region region = chokepoint->getRegions().first;
@@ -233,7 +233,7 @@ void BorderTrackerClass::recalculateBorders()
 				int newCount = 0;
 
 				//count the number of chokepoints part of our border and those not
-				for each(Chokepoint chokepoint in region->getChokepoints())
+				for (Chokepoint chokepoint : region->getChokepoints())
 				{
 					if(mMyForwardBorder.find(chokepoint) != mMyForwardBorder.end())
 						++oldCount;
@@ -245,7 +245,7 @@ void BorderTrackerClass::recalculateBorders()
 				if(newCount <= oldCount)
 				{
 					//reverse regions, so we consider this region ours.
-					for each(Chokepoint chokepoint in region->getChokepoints())
+					for (Chokepoint chokepoint : region->getChokepoints())
 					{
 						if(mMyForwardBorder.count(chokepoint) != 0)
 							mMyForwardBorder.erase(chokepoint);
@@ -262,13 +262,13 @@ void BorderTrackerClass::recalculateBorders()
 		}
 	}
 
-	for each(Chokepoint chokepoint in mMyForwardBorder)
+	for (Chokepoint chokepoint : mMyForwardBorder)
 	{
 		if(mMyBorder.count(chokepoint) == 0)
 			mBorderPositions[PositionType::ForwardChokepoint].insert(BorderPosition(PositionType::ForwardChokepoint, chokepoint));
 	}
 
-	for each(Region region in mMyForwardRegions)
+	for (Region region : mMyForwardRegions)
 	{
 		if(mMyRegions.count(region) == 0)
 			mBorderPositions[PositionType::ForwardRegion].insert(BorderPosition(PositionType::ForwardRegion, region));

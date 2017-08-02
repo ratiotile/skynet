@@ -15,7 +15,7 @@ void GameProgressDetectionClass::update()
 	int enemyGuessSupply = 0;
 	int mySupply = BWAPI::Broodwar->self()->supplyUsed();
 
-	for each(Unit unit in UnitTracker::Instance().selectAllEnemy())
+	for (Unit unit : UnitTracker::Instance().selectAllEnemy())
 	{
 		int supply = unit->getType().supplyRequired();
 
@@ -28,7 +28,7 @@ void GameProgressDetectionClass::update()
 	if(PlayerTracker::Instance().getEnemies().size() < 2)
 	{
 		int buildingCount = 0;
-		for each(Unit unit in UnitTracker::Instance().selectAllUnits())
+		for (Unit unit : UnitTracker::Instance().selectAllUnits())
 		{
 			if(unit->getType().isBuilding() && !unit->getType().isAddon())
 				++buildingCount;

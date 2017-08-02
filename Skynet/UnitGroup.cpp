@@ -13,7 +13,7 @@ int UnitGroup::countCompletedBy(int time) const
 	const int &timeNow = BWAPI::Broodwar->getFrameCount();
 
 	int total = 0;
-	for each(Unit unit in mUnits)
+	for (Unit unit : mUnits)
 	{
 		if(unit->isCompleted() || unit->getCompletedTime() <= time)
 			++total;
@@ -108,7 +108,7 @@ UnitGroup::operator std::set<Unit>() const
 
 int UnitGroup::ratingDifference(const UnitGroup &other) const
 {
-	// not sure about this, along the right lines with using time to kill as that in turns considers weapon damage, terrain, health etc but bad atm
+	// not sure about this, along the right lines with using time to kill as that : turns considers weapon damage, terrain, health etc but bad atm
 	if(mUnits.empty() && other.mUnits.empty())
 		return 0;
 	else if(mUnits.empty())
@@ -118,9 +118,9 @@ int UnitGroup::ratingDifference(const UnitGroup &other) const
 
 	int OtherKillThisTime = 0;
 	int ThisKillOtherTime = 0;
-	for each(Unit thisUnit in mUnits)
+	for (Unit thisUnit : mUnits)
 	{
-		for each(Unit otherUnit in other.mUnits)
+		for (Unit otherUnit : other.mUnits)
 		{
 			if(otherUnit->canAttack(thisUnit) && !thisUnit->isUnderDarkSwarm() && otherUnit->getDistance(thisUnit) < 600)
 			{
@@ -160,7 +160,7 @@ Position UnitGroup::getCenter() const
 
 	Vector position;
 
-	for each(Unit unit in mUnits)
+	for (Unit unit : mUnits)
 	{
 		position += Vector(unit->getPosition());
 	}
@@ -180,7 +180,7 @@ bool UnitGroup::operator!=(const UnitGroup &other) const
 
 UnitGroup &UnitGroup::operator+=(const UnitGroup &other)
 {
-	for each(Unit unit in other)
+	for (Unit unit : other)
 	{
 		insert(unit);
 	}
@@ -200,7 +200,7 @@ UnitGroup UnitGroup::getBestFittingToCircle(int circleSize, int inFramesTime) co
 		Unit furthestUnit;
 		int furthestDistance = 0;
 
-		for each(Unit unit in circleUnits)
+		for (Unit unit : circleUnits)
 		{
 			int distanceToCenter;
 			if(inFramesTime == 0)
@@ -231,7 +231,7 @@ Unit UnitGroup::getClosestUnit(Unit unit) const
 	Unit closestUnit;
 	int closestDistance = std::numeric_limits<int>::max();
 
-	for each(Unit groupUnit in mUnits)
+	for (Unit groupUnit : mUnits)
 	{
 		int thisDistance = unit->getDistance(groupUnit);
 		if(thisDistance < closestDistance)
@@ -249,7 +249,7 @@ Unit UnitGroup::getClosestUnit(Position position) const
 	Unit closestUnit;
 	int closestDistance = std::numeric_limits<int>::max();
 
-	for each(Unit groupUnit in mUnits)
+	for (Unit groupUnit : mUnits)
 	{
 		int thisDistance = groupUnit->getDistance(position);
 		if(thisDistance < closestDistance)
@@ -264,7 +264,7 @@ Unit UnitGroup::getClosestUnit(Position position) const
 
 bool UnitGroup::isAnyInRange(const Unit &unit) const
 {
-	for each(Unit groupUnit in mUnits)
+	for (Unit groupUnit : mUnits)
 	{
 		if(groupUnit->isInRange(unit))
 			return true;
@@ -275,9 +275,9 @@ bool UnitGroup::isAnyInRange(const Unit &unit) const
 
 bool UnitGroup::isAnyInRange(const UnitGroup &otherGroup) const
 {
-	for each(Unit groupUnit in mUnits)
+	for (Unit groupUnit : mUnits)
 	{
-		for each(Unit otherGroupUnit in otherGroup)
+		for (Unit otherGroupUnit : otherGroup)
 		{
 			if(groupUnit->isInRange(otherGroupUnit))
 				return true;
@@ -290,9 +290,9 @@ bool UnitGroup::isAnyInRange(const UnitGroup &otherGroup) const
 int UnitGroup::minDistanceBetween(const UnitGroup &otherGroup) const
 {
 	int minDistance = std::numeric_limits<int>::max();
-	for each(Unit groupUnit in mUnits)
+	for (Unit groupUnit : mUnits)
 	{
-		for each(Unit otherGroupUnit in otherGroup)
+		for (Unit otherGroupUnit : otherGroup)
 		{
 			int thisDistance = otherGroupUnit->getDistance(groupUnit);
 			if(thisDistance < minDistance)
@@ -313,7 +313,7 @@ UnitGroup UnitGroup::operator+(const UnitGroup &other) const
 int UnitGroup::getBuildScore() const
 {
 	int rating = 0;
-	for each(Unit unit in mUnits)
+	for (Unit unit : mUnits)
 	{
 		rating += unit->getType().buildScore();
 	}
@@ -376,7 +376,7 @@ bool UnitGroup::isWorthEngaging(const UnitGroup &other) const
 int UnitGroup::getAverageTerrainHeight() const
 {
 	int height = 0;
-	for each(Unit unit in mUnits)
+	for (Unit unit : mUnits)
 	{
 		height += BWAPI::Broodwar->getGroundHeight(unit->getTilePosition());
 	}
@@ -387,7 +387,7 @@ int UnitGroup::getAverageTerrainHeight() const
 double UnitGroup::getAverageSpeed() const
 {
 	double averageSpeed = 0;
-	for each(Unit unit in mUnits)
+	for (Unit unit : mUnits)
 	{
 		averageSpeed += unit->getType().topSpeed();
 	}
@@ -400,7 +400,7 @@ Region UnitGroup::getMajorityRegion() const
 	int currentCount = 1;
 	Region currentCandidate;
 
-	for each(Unit unit in mUnits)
+	for (Unit unit : mUnits)
 	{
 		const Region &thisRegion = TerrainAnaysis::Instance().getRegion(unit->getPosition());
 		if(thisRegion == currentCandidate)
@@ -420,7 +420,7 @@ Region UnitGroup::getMajorityRegion() const
 
 bool UnitGroup::hasDetection() const
 {
-	for each(Unit unit in mUnits)
+	for (Unit unit : mUnits)
 	{
 		if(unit->getType().isDetector())
 			return true;
@@ -432,7 +432,7 @@ bool UnitGroup::hasDetection() const
 std::set<Unit>::size_type UnitGroup::getCloakedCount() const
 {
 	std::set<Unit>::size_type cloakedCount = 0;
-	for each(Unit unit in mUnits)
+	for (Unit unit : mUnits)
 	{
 		if(unit->getType().hasPermanentCloak() || unit->isCloaked())
 			++cloakedCount;
@@ -444,7 +444,7 @@ std::set<Unit>::size_type UnitGroup::getCloakedCount() const
 std::set<Unit>::size_type UnitGroup::getFlyingCount() const
 {
 	std::set<Unit>::size_type flyingCount = 0;
-	for each(Unit unit in mUnits)
+	for (Unit unit : mUnits)
 	{
 		if(unit->getType().isFlyer() || unit->isLifted())
 			++flyingCount;
@@ -455,7 +455,7 @@ std::set<Unit>::size_type UnitGroup::getFlyingCount() const
 
 bool UnitGroup::canAttackAir() const
 {
-	for each(Unit unit in mUnits)
+	for (Unit unit : mUnits)
 	{
 		if(unit->canAttackAir())
 			return true;
@@ -466,7 +466,7 @@ bool UnitGroup::canAttackAir() const
 
 bool UnitGroup::canAttackGround() const
 {
-	for each(Unit unit in mUnits)
+	for (Unit unit : mUnits)
 	{
 		if(unit->canAttackGround())
 			return true;
@@ -481,9 +481,9 @@ bool UnitGroup::canMajorityAttack(const UnitGroup &other) const
 		return false;
 
 	double thisGroupAttackCount = 0.0;
-	for each(Unit thisUnit in mUnits)
+	for (Unit thisUnit : mUnits)
 	{
-		for each(Unit otherUnit in other)
+		for (Unit otherUnit : other)
 		{
 			if(thisUnit->canAttack(otherUnit))
 				++thisGroupAttackCount;

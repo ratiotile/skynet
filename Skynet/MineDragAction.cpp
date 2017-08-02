@@ -7,14 +7,14 @@
 
 bool MineDragAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGroup)
 {
-	for each(Unit unit in UnitInformation::Instance().getUnitsTargetting(mUnit))
+	for (Unit unit : UnitInformation::Instance().getUnitsTargetting(mUnit))
 	{
 		if(unit->getType() == BWAPI::UnitTypes::Terran_Vulture_Spider_Mine)
 		{
 			int distance = std::numeric_limits<int>::max();
 			Unit closestUnit;
 
-			for each(Unit enemyUnit in UnitTracker::Instance().selectAllEnemy())
+			for (Unit enemyUnit : UnitTracker::Instance().selectAllEnemy())
 			{
 				if(enemyUnit->getType().isFlyer() || enemyUnit->isLifted() || enemyUnit->getType().isBuilding() || enemyUnit->getType() == BWAPI::UnitTypes::Terran_Vulture_Spider_Mine)
 					continue;

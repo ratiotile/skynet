@@ -110,7 +110,7 @@ bool WorkerScoutTask::update()
 				mHarrasTimer = 72;
 
 				int targettingSupply = 0;
-				for each(Unit unit in mLastUnitsTargetting)
+				for (Unit unit : mLastUnitsTargetting)
 				{
 					if(!unit->getType().isWorker() && (unit->getType().groundWeapon().maxRange() > 32 || unit->getType().topSpeed() > mUnit->getType().topSpeed()))
 						targettingSupply += unit->getType().supplyRequired();
@@ -120,7 +120,7 @@ bool WorkerScoutTask::update()
 				if(!doneSomething)
 				{
 					bool isEnemyToClose = false;
-					for each(Unit unit in mLastUnitsTargetting)
+					for (Unit unit : mLastUnitsTargetting)
 					{
 						if(unit->isInRange(mUnit))
 						{
@@ -203,7 +203,7 @@ bool WorkerScoutTask::update()
 					Unit closestUnit;
 					double minDist = std::numeric_limits<double>::max();
 
-					for each(Unit unit in UnitTracker::Instance().selectAllUnits(mData->getBase()->getPlayer()->getRace().getWorker(), mData->getBase()->getPlayer()))
+					for (Unit unit : UnitTracker::Instance().selectAllUnits(mData->getBase()->getPlayer()->getRace().getWorker(), mData->getBase()->getPlayer()))
 					{
 						if(mData->getBase() != BaseTracker::Instance().getBase(unit->getTilePosition()))
 							continue;

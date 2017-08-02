@@ -27,7 +27,7 @@ void SquadManagerClass::update()
 			++it;
 	}
 
-	for each(Base base in BaseTracker::Instance().getPlayerBases())
+	for (Base base : BaseTracker::Instance().getPlayerBases())
 	{
 		if(!base->getEnemyThreats().empty() && (base->getNumberOfTechBuildings() > 0 || (!base->isMinedOut() && base->getResourceDepot())) && mDefenseSquads.count(base) == 0)
 		{
@@ -60,7 +60,7 @@ void SquadManagerClass::onChangeBuild()
 
 				int smallest = std::numeric_limits<int>::max();
 				BaseSquadTaskPointer smallestSquad;
-				for each(BaseSquadTaskPointer squad in mSquads[it->first])
+				for (BaseSquadTaskPointer squad : mSquads[it->first])
 				{
 					int size = squad->controlSize();
 					if(size < smallest)
@@ -88,7 +88,7 @@ void SquadManagerClass::onChangeBuild()
 	{
 		if(o->first != SquadType::DefaultSquad && o->first != SquadType::DefenseSquad && squads.find(o->first) == squads.end())
 		{
-			for each(BaseSquadTaskPointer task in o->second)
+			for (BaseSquadTaskPointer task : o->second)
 			{
 				task->cancel();
 			}
@@ -104,7 +104,7 @@ void SquadManagerClass::setBehaviour(ArmyBehaviour behaviour)
 	mCurrentBehaviour = behaviour;
 	for(std::map<SquadType, std::set<BaseSquadTaskPointer>>::iterator o = mSquads.begin(); o != mSquads.end(); ++o)
 	{
-		for each(BaseSquadTaskPointer squad in o->second)
+		for (BaseSquadTaskPointer squad : o->second)
 		{
 			squad->changeBehaviour(behaviour);
 		}

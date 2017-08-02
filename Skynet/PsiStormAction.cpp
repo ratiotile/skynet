@@ -10,7 +10,7 @@ bool PsiStormAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGro
 	if(mUnit->getOrder() == BWAPI::Orders::CastPsionicStorm)
 		return true;
 
-	//TODO : Morph arcon temp in here with some non ideal code till group micro actions is complete, checks if it can actually morph the archon,
+	//TODO : Morph arcon temp : here with some non ideal code till group micro actions is complete, checks if it can actually morph the archon,
 	// ie not using 3.6
 	static bool allowsArchonMorph = true;
 	if(allowsArchonMorph)
@@ -24,7 +24,7 @@ bool PsiStormAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGro
 		{
 			Unit otherTemp;
 			int closestDistance = std::numeric_limits<int>::max();
-			for each(Unit ht in UnitTracker::Instance().selectAllUnits(BWAPI::UnitTypes::Protoss_High_Templar))
+			for (Unit ht : UnitTracker::Instance().selectAllUnits(BWAPI::UnitTypes::Protoss_High_Templar))
 			{
 				if(ht == mUnit)
 					continue;
@@ -47,7 +47,7 @@ bool PsiStormAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGro
 			{
 				Unit otherClosestTemp;
 				int otherClosestDistance = std::numeric_limits<int>::max();
-				for each(Unit ht in UnitTracker::Instance().selectAllUnits(BWAPI::UnitTypes::Protoss_High_Templar))
+				for (Unit ht : UnitTracker::Instance().selectAllUnits(BWAPI::UnitTypes::Protoss_High_Templar))
 				{
 					if(ht == otherTemp)
 						continue;
@@ -92,7 +92,7 @@ bool PsiStormAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGro
 
 		UnitGroup targetsToChooseFrom;
 
-		for each(Unit unit in UnitTracker::Instance().selectAllEnemy())
+		for (Unit unit : UnitTracker::Instance().selectAllEnemy())
 		{
 			if(!unit->exists() || unit->isStasised() || unit->isUnderStorm())
 				continue;
@@ -126,7 +126,7 @@ bool PsiStormAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGro
 					BWAPI::Position castLocation = targets.getCenter();
 
 					int inStormCount = 0;
-					for each(Unit unit in UnitTracker::Instance().selectAllUnits())
+					for (Unit unit : UnitTracker::Instance().selectAllUnits())
 					{
 						if(!unit->isUnderStorm() && unit->getDistance(castLocation) < 64)
 							++inStormCount;
@@ -165,7 +165,7 @@ bool PsiStormAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGro
 						if(tries < 3)
 						{
 							targets = targetsToChooseFrom;
-							for each(Unit unit in targetsToChooseFrom)
+							for (Unit unit : targetsToChooseFrom)
 							{
 								if(unit->getDistance(castLocation) < 64)
 									targets.erase(unit);

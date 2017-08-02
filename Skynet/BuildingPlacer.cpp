@@ -25,8 +25,8 @@ void BuildingPlacerClass::calculateReservations()
 	// first reserve all wall positions
 	mPermanentReserved = WallTracker::Instance().getWallTiles();
 
-	// for each base that has resources
-	for each(Base base in BaseTracker::Instance().getResourceBases())
+	// for  base that has resources
+	for (Base base : BaseTracker::Instance().getResourceBases())
 	{
 		// reserve the base location
 		for(int x = base->getCenterBuildLocation().x; x < base->getCenterBuildLocation().x+centerType.tileWidth(); ++x)
@@ -41,8 +41,8 @@ void BuildingPlacerClass::calculateReservations()
 					mPermanentReserved[TilePosition(x, y)] = centerType;
 		}
 
-		// and reserve the geyser space just so it doesn't get included in the resource reserved space
-		for each(Unit geyser in base->getGeysers())
+		// and reserve the geyser space just so it doesn't get included : the resource reserved space
+		for (Unit geyser : base->getGeysers())
 		{
 			for(int x = geyser->getTilePosition().x; x < geyser->getTilePosition().x+geyser->getType().tileWidth(); ++x)
 				for(int y = geyser->getTilePosition().y; y < geyser->getTilePosition().y+geyser->getType().tileHeight(); ++y)
@@ -57,8 +57,8 @@ void BuildingPlacerClass::calculateReservations()
 void BuildingPlacerClass::finaliseReservations()
 {
 	// Reserve the tiles around the choke for general use
-	// TODO: perhaps only in a path between the two sides
-	for each(Chokepoint choke in TerrainAnaysis::Instance().getChokepoints())
+	// TODO: perhaps only : a path between the two sides
+	for (Chokepoint choke : TerrainAnaysis::Instance().getChokepoints())
 	{
 		int minX = std::min(choke->getBuildTiles().first.x, choke->getBuildTiles().second.x);
 		int maxX = std::max(choke->getBuildTiles().first.x, choke->getBuildTiles().second.x);
@@ -75,7 +75,7 @@ void BuildingPlacerClass::finaliseReservations()
 
 void BuildingPlacerClass::reserveResourceSpace(const UnitGroup &resources, Base base)
 {
-	for each(Unit resource in resources)
+	for (Unit resource : resources)
 	{
 		int distanceBetween = (resource->getPosition().getApproxDistance(base->getCenterLocation()) / 32) + 1;
 		for(int x = resource->getTilePosition().x - int(distanceBetween); x < resource->getTilePosition().x + int(distanceBetween) + 4; ++x)
@@ -125,7 +125,7 @@ void BuildingPlacerClass::onDestroy(Unit unit)
 {
 	if(mResources.count(unit) != 0)
 	{
-		for each(TilePosition tile in mResources[unit])
+		for (TilePosition tile : mResources[unit])
 		{
 			--mResourceReserved[tile];
 			if(mResourceReserved[tile] == 0)
@@ -210,7 +210,7 @@ std::pair<TilePosition, Base> BuildingPlacerClass::buildingLocationToTile(Buildi
 	if(type.requiresPsi())
 	{
 		bool atleastone = false;
-		for each(Unit pylon in UnitTracker::Instance().selectAllUnits(BWAPI::UnitTypes::Protoss_Pylon))
+		for (Unit pylon : UnitTracker::Instance().selectAllUnits(BWAPI::UnitTypes::Protoss_Pylon))
 		{
 			if(pylon->isCompleted())
 				atleastone = true;
@@ -230,9 +230,9 @@ std::pair<TilePosition, Base> BuildingPlacerClass::buildingLocationToTile(Buildi
 	case BuildingLocation::BaseParimeter:
 	case BuildingLocation::Base:
 		{
-			for each(Base base in baseToBuildAtOrder(type))
+			for (Base base : baseToBuildAtOrder(type))
 			{
-				TilePosition pos = getBuildLocation(base, type); // TODO : flags of some sort so certain units can be build in minerals etc
+				TilePosition pos = getBuildLocation(base, type); // TODO : flags of some sort so certain units can be build : minerals etc
 
 				if(pos != BWAPI::TilePositions::None)
 					return std::make_pair(pos, base);
@@ -246,7 +246,7 @@ std::pair<TilePosition, Base> BuildingPlacerClass::buildingLocationToTile(Buildi
 	case BuildingLocation::Proxy:
 			//TODO: find a location that isn't on the path between any base to any other base start locations closest to potential enemy locations
 	case BuildingLocation::Manner:
-			//TODO: build in a location that harms the enemy, engineering bay in expand location, pylon in mineral line, gas steal etc
+			//TODO: build : a location that harms the enemy, engineering bay : expand location, pylon : mineral line, gas steal etc
 		break;
 	}
 
@@ -291,7 +291,7 @@ public:
 		, mRegion(region)
 	{}
 
-	bool operator()(TilePosition &location)
+      bool operator()(TilePosition location)
 	{
 		return BuildingPlacer::Instance().isTileWalkable(location, mIgnoreReservations) && TerrainAnaysis::Instance().getRegion(location) == mRegion;
 	}
@@ -315,7 +315,7 @@ bool BuildingPlacerClass::isLocationNonBlocking(TilePosition position, BWAPI::Un
 	/* Don't build on choke tiles, they are vital for the calculation */
 	Region region = TerrainAnaysis::Instance().getRegion(position);
 	const std::set<TilePosition> &chokeTiles = region->getChokepointTiles();
-	for each(TilePosition tile in chokeTiles)
+	for (TilePosition tile : chokeTiles)
 	{
 		if(tile.x >= position.x && tile.x < position.x + type.tileWidth() && tile.y >= position.y && tile.y < position.y + type.tileHeight())
 			return false;
@@ -333,7 +333,7 @@ bool BuildingPlacerClass::isLocationNonBlocking(TilePosition position, BWAPI::Un
 			ignoreTiles.insert(TilePosition(x, y));
 
 	/* Don't block other buildings */
-	for each(Unit unit in UnitTracker::Instance().getAllUnits())
+	for (Unit unit : UnitTracker::Instance().getAllUnits())
 	{
 		if(unit->exists() && !unit->getType().canProduce())
 			continue;
@@ -346,7 +346,7 @@ bool BuildingPlacerClass::isLocationNonBlocking(TilePosition position, BWAPI::Un
 		{
 			/* 2 is no location found yet */
 			int isBlocked = 2;
-			for each(TilePosition tile in getSurroundingTiles(unit->getTilePosition(), unit->getType(), ignoreReservations))
+			for (TilePosition tile : getSurroundingTiles(unit->getTilePosition(), unit->getType(), ignoreReservations))
 			{
 				if(TerrainAnaysis::Instance().getRegion(tile) == region)
 				{
@@ -369,7 +369,7 @@ bool BuildingPlacerClass::isLocationNonBlocking(TilePosition position, BWAPI::Un
 	}
 
 	/* Check which tiles can be reached */
-	targets = MapHelper::floodFill(startTile, RegionChokeCompare(ignoreReservations, region), targets, ignoreTiles);
+      targets = MapHelper::floodFill(startTile, RegionChokeCompare(ignoreReservations, region), targets, ignoreTiles);
 
 	/* If there are no remaining targets, there are all reachable */
 	if(targets.empty())
@@ -384,7 +384,7 @@ bool BuildingPlacerClass::isLocationNonBlocking(TilePosition position, BWAPI::Un
 		//if(m_bShowDebugInfo)
 // 		{
 // 			DrawBuffer::Instance().clearBuffer(BufferedCategory::BuildingPlacer);
-// 			for each(TilePosition tile in targets)
+// 			for (TilePosition tile : targets)
 // 				DrawBuffer::Instance().drawBufferedCircle(BWAPI::CoordinateType::Map, tile.x*32+16, tile.y*32+16, 16, 240, BWAPI::Colors::Red, false, BufferedCategory::BuildingPlacer);
 // 
 // 			for(int x = position.x; x < position.x + type.tileWidth(); ++x)
@@ -398,10 +398,10 @@ bool BuildingPlacerClass::isLocationNonBlocking(TilePosition position, BWAPI::Un
 	//if(m_bShowDebugInfo)
 // 	{
 // 		DrawBuffer::Instance().clearBuffer(BufferedCategory::BuildingPlacer);
-// 		for each(TilePosition tile in targets)
+// 		for (TilePosition tile : targets)
 // 			DrawBuffer::Instance().drawBufferedCircle(BWAPI::CoordinateType::Map, tile.x*32+16, tile.y*32+16, 16, 240, BWAPI::Colors::Red, false, BufferedCategory::BuildingPlacer);
 // 
-// 		for each(TilePosition tile in newTargets)
+// 		for (TilePosition tile : newTargets)
 // 			DrawBuffer::Instance().drawBufferedCircle(BWAPI::CoordinateType::Map, tile.x*32+16, tile.y*32+16, 16, 240, BWAPI::Colors::Yellow, false, BufferedCategory::BuildingPlacer);
 // 
 // 		for(int x = position.x; x < position.x + type.tileWidth(); ++x)
@@ -418,7 +418,7 @@ bool BuildingPlacerClass::isLocationBuildable(TilePosition position, BWAPI::Unit
 {
 	if(type.isRefinery())
 	{
-		for each(Unit geyser in UnitTracker::Instance().getGeysers())
+		for (Unit geyser : UnitTracker::Instance().getGeysers())
 		{
 			if(geyser->getTilePosition() == position)
 			{
@@ -452,7 +452,7 @@ bool BuildingPlacerClass::isLocationBuildable(TilePosition position, BWAPI::Unit
 
 	if(type.isResourceDepot())
 	{
-		for each(Unit mineral in UnitTracker::Instance().getMinerals())
+		for (Unit mineral : UnitTracker::Instance().getMinerals())
 		{
 			if(mineral->accessibility() != AccessType::Dead)
 			{
@@ -465,7 +465,7 @@ bool BuildingPlacerClass::isLocationBuildable(TilePosition position, BWAPI::Unit
 				}
 			}
 		}
-		for each(Unit geyser in UnitTracker::Instance().getGeysers())
+		for (Unit geyser : UnitTracker::Instance().getGeysers())
 		{
 			if(geyser->accessibility() != AccessType::Dead)
 			{
@@ -519,7 +519,7 @@ bool BuildingPlacerClass::isTileBlocked(TilePosition tile, BWAPI::UnitType type,
 				return true;
 	}
 
-	for each(Unit unit in UnitTracker::Instance().getUnitsOnTile(tile.x, tile.y))
+	for (Unit unit : UnitTracker::Instance().getUnitsOnTile(tile.x, tile.y))
 	{
 		if(!unit->exists())
 			continue;
@@ -573,9 +573,9 @@ bool BuildingPlacerClass::isTileWalkable(TilePosition tile, bool ignoreReservati
 
 std::pair<TilePosition, Base> BuildingPlacerClass::getRefineryLocation() const
 {
-	for each(Base base in baseToBuildAtOrder())
+	for (Base base : baseToBuildAtOrder())
 	{
-		for each(Unit geyser in base->getGeysers())
+		for (Unit geyser : base->getGeysers())
 		{
 			if(!isReserved(geyser->getTilePosition()))
 				return std::make_pair(geyser->getTilePosition(), base);
@@ -614,14 +614,14 @@ bool baseComparePylon(const Base &i, const Base &j)
 
 	// Next prioritise the base that doesn't have a pylon
 	int iCount = 0;
-	for each(Unit building in i->getBuildings())
+	for (Unit building : i->getBuildings())
 	{
 		if(building->getType() == BWAPI::UnitTypes::Protoss_Pylon && building->getPlayer() == BWAPI::Broodwar->self())
 			++iCount;
 	}
 
 	int jCount = 0;
-	for each(Unit building in j->getBuildings())
+	for (Unit building : j->getBuildings())
 	{
 		if(building->getType() == BWAPI::UnitTypes::Protoss_Pylon && building->getPlayer() == BWAPI::Broodwar->self())
 			++jCount;
@@ -642,14 +642,14 @@ bool baseComparePylon(const Base &i, const Base &j)
 bool baseCompareDefense(const Base &i, const Base &j, BWAPI::UnitType type)
 {
 	int iCount = 0;
-	for each(Unit building in i->getBuildings())
+	for (Unit building : i->getBuildings())
 	{
 		if(building->getType() == type && building->getPlayer() == BWAPI::Broodwar->self())
 			++iCount;
 	}
 
 	int jCount = 0;
-	for each(Unit building in j->getBuildings())
+	for (Unit building : j->getBuildings())
 	{
 		if(building->getType() == type && building->getPlayer() == BWAPI::Broodwar->self())
 			++jCount;
@@ -669,7 +669,7 @@ std::vector<Base> BuildingPlacerClass::baseToBuildAtOrder(BWAPI::UnitType type) 
 	else if(type == BWAPI::UnitTypes::Protoss_Photon_Cannon || type == BWAPI::UnitTypes::Terran_Missile_Turret)
 	{
 		std::vector<Base> newBasesOrder;
-		for each(Base base in basesOrder)
+		for (Base base : basesOrder)
 		{
 			if(base->getMinerals().empty())
 				continue;
@@ -679,7 +679,7 @@ std::vector<Base> BuildingPlacerClass::baseToBuildAtOrder(BWAPI::UnitType type) 
 			if(!hasPylon)
 			{
 				std::set<Unit> buildings = base->getBuildings();
-				for each(Unit building in buildings)
+				for (Unit building : buildings)
 				{
 					if(building->getType() == BWAPI::UnitTypes::Protoss_Pylon && building->getPlayer() == BWAPI::Broodwar->self() && building->isCompleted())
 						hasPylon = true;
@@ -702,7 +702,7 @@ std::vector<Base> BuildingPlacerClass::baseToBuildAtOrder() const
 {
 	std::vector<Base> returnValue;
 
-	for each(Base base in BaseTracker::Instance().getPlayerBases())
+	for (Base base : BaseTracker::Instance().getPlayerBases())
 	{
 		if(!base->isUnderAttack())
 			returnValue.push_back(base);
@@ -721,7 +721,7 @@ bool BuildingPlacerClass::isAddonBuilder(int x, int y) const
 			return true;
 	}
 
-	for each(Unit unit in UnitTracker::Instance().getUnitsOnTile(x, y))
+	for (Unit unit : UnitTracker::Instance().getUnitsOnTile(x, y))
 	{
 		if(!unit->isLifted() && UnitHelper::hasAddon(unit->getType()))
 			return true;
@@ -754,7 +754,7 @@ std::pair<TilePosition, Base> BuildingPlacerClass::getExpandLocation(bool gas) c
 
 	for(std::set<BorderPosition>::const_iterator it = myRegions.begin(); it != myRegions.end(); ++it)
 	{
-		for each(Base base in it->mRegion->getBases())
+		for (Base base : it->mRegion->getBases())
 		{
 			rememberBestExpandLocation(base, basePos, closestDistance, furthestDistance, type, gas, enemyBases);
 		}
@@ -762,7 +762,7 @@ std::pair<TilePosition, Base> BuildingPlacerClass::getExpandLocation(bool gas) c
 
 	if(type == ExpandType::expNone)
 	{
-		for each(Base base in BaseTracker::Instance().getAllBases())
+		for (Base base : BaseTracker::Instance().getAllBases())
 		{
 			if(enemyRegions.count(BorderPosition(PositionType::EnemyControlRegion, base->getRegion())) != 0)
 				continue;
@@ -773,7 +773,7 @@ std::pair<TilePosition, Base> BuildingPlacerClass::getExpandLocation(bool gas) c
 
 	if(type == ExpandType::expNone)
 	{
-		for each(Base base in BaseTracker::Instance().getAllBases())
+		for (Base base : BaseTracker::Instance().getAllBases())
 		{
 			rememberBestExpandLocation(base, basePos, closestDistance, furthestDistance, type, gas, enemyBases);
 		}
@@ -843,7 +843,7 @@ void BuildingPlacerClass::rememberBestExpandLocation(Base base, Base& bestBase, 
 
 		//TODO: when we have transport code, remove this if we have a transport
 		bool isConnected = false;
-		for each(Unit unit in UnitTracker::Instance().selectAllUnits(BWAPI::Broodwar->self()->getRace().getWorker()))
+		for (Unit unit : UnitTracker::Instance().selectAllUnits(BWAPI::Broodwar->self()->getRace().getWorker()))
 		{
 			if(unit->hasPath(Position(base->getCenterBuildLocation())))
 			{
@@ -857,7 +857,7 @@ void BuildingPlacerClass::rememberBestExpandLocation(Base base, Base& bestBase, 
 
 		if(isLocationBuildable(base->getCenterBuildLocation(), BWAPI::Broodwar->self()->getRace().getResourceDepot()))
 		{
-			for each(Base myBase in BaseTracker::Instance().getPlayerBases())
+			for (Base myBase : BaseTracker::Instance().getPlayerBases())
 			{
 				if(myBase->getCenterBuildLocation() == BWAPI::TilePositions::None)
 					continue;
@@ -865,7 +865,7 @@ void BuildingPlacerClass::rememberBestExpandLocation(Base base, Base& bestBase, 
 				int tDistance = MapHelper::getGroundDistance(base->getCenterLocation(), myBase->getCenterLocation());
 				if(tDistance >= 1450 && type != ExpandType::expCloseToMe && !enemyBases.empty())
 				{
-					for each(Base enemyBase in enemyBases)
+					for (Base enemyBase : enemyBases)
 					{
 						int enemyDistance = MapHelper::getGroundDistance(base->getCenterLocation(), enemyBase->getCenterLocation());
 						if(enemyDistance > furthestDistance)

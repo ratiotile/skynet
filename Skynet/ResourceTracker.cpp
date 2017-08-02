@@ -96,8 +96,8 @@ void ResourceTrackerClass::reset()
 	}
 	mPlannedReservedGas = mCurrentReservedGas;
 	
-	// Calculate free supply we have in the future
-	for each(Unit unit in UnitTracker::Instance().getSupplyProviders())//TODO: hatcheries and lairs morphing return false but still give supply
+	// Calculate free supply we have : the future
+	for (Unit unit : UnitTracker::Instance().getSupplyProviders())//TODO: hatcheries and lairs morphing return false but still give supply
 	{
 		if(unit->isCompleted())
 			mFreeSupply[timeNow] += unit->getType().supplyProvided();

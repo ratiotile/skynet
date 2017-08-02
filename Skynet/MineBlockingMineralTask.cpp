@@ -57,7 +57,7 @@ bool MineBlockingMineralTask::update()
 		{
 			Unit closestMineral;
 			int closestDistance = std::numeric_limits<int>::max();
-			for each(Unit mineral in mMinerals)
+			for (Unit mineral : mMinerals)
 			{
 				int distance = mineral->getDistance(mUnit);
 				if(distance < closestDistance)

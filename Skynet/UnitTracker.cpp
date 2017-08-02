@@ -165,7 +165,7 @@ UnitGroup UnitTrackerClass::getUnitGroup(BWAPI::Unitset units)
 {
 	UnitGroup returnUnits;
 
-	for each(auto unit in units)
+	for (auto unit : units)
 	{
 		std::map<BWAPI::Unit, Unit>::iterator it = mUnits.find(unit);
 		if(it != mUnits.end())
@@ -199,7 +199,7 @@ void UnitTrackerClass::checkUnit(Unit unit)
 UnitGroup UnitTrackerClass::selectAllEnemy(Player player)
 {
 	UnitGroup enemies;
-	for each(Player player in PlayerTracker::Instance().getEnemies(player))
+	for (Player player : PlayerTracker::Instance().getEnemies(player))
 	{
 		enemies += mPlayerToUnits[player];
 	}
@@ -210,7 +210,7 @@ UnitGroup UnitTrackerClass::selectAllEnemy(Player player)
 UnitGroup UnitTrackerClass::selectAllEnemy(BWAPI::UnitType type, Player player)
 {
 	UnitGroup enemies;
-	for each(Player player in PlayerTracker::Instance().getEnemies(player))
+	for (Player player : PlayerTracker::Instance().getEnemies(player))
 	{
 		enemies += mPlayerToTypeToUnits[player][type];
 	}

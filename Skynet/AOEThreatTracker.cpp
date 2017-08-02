@@ -30,7 +30,7 @@ void AOEThreatTrackerClass::update()
 			++it;
 	}
 
-	for each(Unit unit in UnitTracker::Instance().selectAllEnemy())
+      for (Unit unit : UnitTracker::Instance().selectAllEnemy())
 	{
 		const BWAPI::UnitType &type = unit->getType();
 		if((type == BWAPI::UnitTypes::Protoss_Scarab || type == BWAPI::UnitTypes::Terran_Vulture_Spider_Mine) && mUnitThreats.count(unit) == 0)
@@ -41,7 +41,7 @@ void AOEThreatTrackerClass::update()
 		}
 	}
 
-	for each(BWAPI::Bullet bullet in BWAPI::Broodwar->getBullets())
+      for (BWAPI::Bullet bullet : BWAPI::Broodwar->getBullets())
 	{
 		const BWAPI::BulletType &type = bullet->getType();
 		if((type == BWAPI::BulletTypes::Psionic_Storm || type == BWAPI::BulletTypes::EMP_Missile) && mBulletThreats.count(bullet) == 0)
@@ -58,7 +58,7 @@ AOEThreat AOEThreatTrackerClass::getClosestGroundThreat(const Position &pos) con
 	int closestDistance = std::numeric_limits<int>::max();
 	AOEThreat closestThreat;
 
-	for each(AOEThreat threat in mAllThreats)
+      for (AOEThreat threat : mAllThreats)
 	{
 		if(!threat->isGroundThreat())
 			continue;
@@ -80,7 +80,7 @@ AOEThreat AOEThreatTrackerClass::getClosestAirThreat(const Position &pos) const
 	int closestDistance = std::numeric_limits<int>::max();
 	AOEThreat closestThreat;
 
-	for each(AOEThreat threat in mAllThreats)
+      for (AOEThreat threat : mAllThreats)
 	{
 		if(!threat->isAirThreat())
 			continue;
@@ -101,7 +101,7 @@ AOEThreat AOEThreatTrackerClass::getClosestEnergyThreat(const Position &pos) con
 	int closestDistance = std::numeric_limits<int>::max();
 	AOEThreat closestThreat;
 
-	for each(AOEThreat threat in mAllThreats)
+      for (AOEThreat threat : mAllThreats)
 	{
 		if(!threat->isEnergyThreat())
 			continue;
@@ -119,7 +119,7 @@ AOEThreat AOEThreatTrackerClass::getClosestEnergyThreat(const Position &pos) con
 
 bool AOEThreatTrackerClass::isTargetOfThreat(Unit unit) const
 {
-	for each(AOEThreat threat in mAllThreats)
+      for (AOEThreat threat : mAllThreats)
 	{
 		if(threat->getTarget() == unit)
 			return true;
@@ -136,7 +136,7 @@ AOEThreat AOEThreatTrackerClass::getClosestThreat(Unit unit) const
 	int closestDistance = std::numeric_limits<int>::max();
 	AOEThreat closestThreat;
 
-	for each(AOEThreat threat in mAllThreats)
+      for (AOEThreat threat : mAllThreats)
 	{
 		if(threat->isEnergyThreat())
 		{

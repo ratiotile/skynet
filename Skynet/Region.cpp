@@ -29,7 +29,7 @@ void RegionClass::addChokepoint(Chokepoint chokepoint)
 void RegionClass::draw(BWAPI::Color color)
 {
 	BWAPI::Broodwar->drawCircle(BWAPI::CoordinateType::Map, mCenter.x, mCenter.y, 64, color);
-	for each(Chokepoint chokepoint in mChokepoints)
+	for (Chokepoint chokepoint : mChokepoints)
 	{
 		Chokepoint choke = chokepoint;
 		BWAPI::Broodwar->drawLine(BWAPI::CoordinateType::Map, choke->getCenter().x, choke->getCenter().y, mCenter.x, mCenter.y, color);

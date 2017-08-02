@@ -7,7 +7,7 @@ void PylonPowerTrackerClass::update()
 	if(mPylons.empty())
 		return;
 
-	for each(Unit pylon in mPylons)
+	for (Unit pylon : mPylons)
 	{
 		if(pylon->isCompleted() && mPylonSmallPowerSites.count(pylon) == 0)
 			addToPowerField(pylon);
@@ -134,7 +134,7 @@ void PylonPowerTrackerClass::addToPowerField(Unit unit)
 
 void PylonPowerTrackerClass::removeFromPowerField(Unit unit)
 {
-	for each(TilePosition tile in mPylonSmallPowerSites[unit])
+	for (TilePosition tile : mPylonSmallPowerSites[unit])
 	{
 		std::map<TilePosition, int>::iterator it = mSmallPowerSites.find(tile);
 		--it->second;
@@ -144,7 +144,7 @@ void PylonPowerTrackerClass::removeFromPowerField(Unit unit)
 	}
 	mPylonSmallPowerSites.erase(unit);
 
-	for each(TilePosition tile in mPylonMediumPowerSites[unit])
+	for (TilePosition tile : mPylonMediumPowerSites[unit])
 	{
 		std::map<TilePosition, int>::iterator it = mMediumPowerSites.find(tile);
 		--it->second;
@@ -154,7 +154,7 @@ void PylonPowerTrackerClass::removeFromPowerField(Unit unit)
 	}
 	mPylonMediumPowerSites.erase(unit);
 
-	for each(TilePosition tile in mPylonLargePowerSites[unit])
+	for (TilePosition tile : mPylonLargePowerSites[unit])
 	{
 		std::map<TilePosition, int>::iterator it = mLargePowerSites.find(tile);
 		--it->second;

@@ -13,7 +13,7 @@ bool DetectorAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGro
 
 	Unit needsDetecting;
 	int unitDistance = std::numeric_limits<int>::max();
-	for each(Unit unit in UnitTracker::Instance().selectAllEnemy())
+	for (Unit unit : UnitTracker::Instance().selectAllEnemy())
 	{
 		const BWAPI::UnitType &unitType = unit->getType();
 		if(unitType.hasPermanentCloak() || unitType == BWAPI::UnitTypes::Zerg_Lurker || unit->isCloaked() || unit->isBurrowed())
@@ -40,7 +40,7 @@ bool DetectorAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGro
 	}
 
 	UnitGroup protectionUnits;
-	for each(Unit unit in squadUnitGroup)
+	for (Unit unit : squadUnitGroup)
 	{
 		if(!UnitHelper::isArmyUnit(unit->getType()))
 			continue;

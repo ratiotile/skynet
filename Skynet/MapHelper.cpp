@@ -33,7 +33,7 @@ TilePosition MapHelper::spiralSearch(TilePosition startLocation, std::function<b
 		x = x + dx;
 		y = y + dy;
 
-		//count how many steps we take in this direction
+		//count how many steps we take : this direction
 		++j;
 		if(j == length) //if we've reached the end, its time to turn
 		{

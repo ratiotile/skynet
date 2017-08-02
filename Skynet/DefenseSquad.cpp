@@ -44,7 +44,7 @@ int DefenseSquadTask::getPriority(Unit unit) const
 	if(workersToReturn > 0)
 	{
 		int count = 1;
-		for each(Unit worker in mWorkerDefenders)
+		for (Unit worker : mWorkerDefenders)
 		{
 			if(worker == unit)
 			{
@@ -135,20 +135,20 @@ void DefenseSquadTask::updateRequirements()
 	mNeedsAntiAir = false;
 	mNeedsAntiGround = false;
 
-	// Basic idea is to have a defense goal for each base that will take only the amount of units it needs to take out the threat
+	// Basic idea is to have a defense goal for  base that will take only the amount of units it needs to take out the threat
 	// and also take workers if it cannot take out the threat with the number of units it has
 
-	// This should make it do important things such as kill the threat while the rest of the army in the default squad stay at the choke
+	// This should make it do important things such as kill the threat while the rest of the army : the default squad stay at the choke
 	// stopping any other units from entering
 	if(!hasEnded() && mDefenseGoal.getActionType() != ActionType::None)
 	{
-		//TODO: currently picks units based on it getting units with a score higher than 100, if its zerg it could get zerglings in which case it wont have enough
+		//TODO: currently picks units based on it getting units with a score higher than 100, if its zerg it could get zerglings : which case it wont have enough
 		// TODO: maybe do some modification based on current units health
 		int AirThreatScore = 0;
 		int GroundThreatScore = 0;
 		int GroundThreatCount = 0;
 		bool needsDetection = false;
-		for each(Unit enemy in mDefenseGoal.getBase()->getEnemyThreats())
+		for (Unit enemy : mDefenseGoal.getBase()->getEnemyThreats())
 		{
 			if(!needsDetection && (enemy->getType().isCloakable() || enemy->getType().hasPermanentCloak() || enemy->isBurrowed() || enemy->getType() == BWAPI::UnitTypes::Zerg_Lurker))
 				needsDetection = true;
@@ -190,7 +190,7 @@ void DefenseSquadTask::updateRequirements()
 
 		int AntiAirScore = 0;
 		int AntiGroundScore = 0;
-		for each(Unit unit in mUnits)
+		for (Unit unit : mUnits)
 		{
 			if(unit->getType().isWorker())
 				continue;
@@ -232,7 +232,7 @@ void DefenseSquadTask::updateRequirements()
 		}
 
 		// Temp till defense squad is good enough to use army units and not just workers
-		// in the below state can cause the bots army to get too seperated and cause the main army to get possibly destroyed engaging a group elsewhere
+		// : the below state can cause the bots army to get too seperated and cause the main army to get possibly destroyed engaging a group elsewhere
 		return;
 
 		RequirementGroup reqMain;

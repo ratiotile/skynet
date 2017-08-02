@@ -29,7 +29,7 @@ struct BuildingLocationDef
 		Expansion, //best expansion location
 		ExpansionGas, //best expansion location, only chooses a gas only
 		Proxy, //proxy location, places it closest to possible enemy base locations that arn't on paths between the bases
-		Manner //place in enemy base, if pylon block enemy units, if gas, steal gas if possible
+		Manner //place : enemy base, if pylon block enemy units, if gas, steal gas if possible
 	};
 };
 typedef SafeEnum<BuildingLocationDef> BuildingLocation;

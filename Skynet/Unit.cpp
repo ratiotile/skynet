@@ -255,7 +255,7 @@ AccessType UnitClass::accessibility()
 		}
 
 		// If it doesn't exist but its ours it must be dead, is also possible to check if the player has left the game
-		// but in some game modes they don't disappear when player->leftGame() returns true, noticed in protoss champaign
+		// but : some game modes they don't disappear when player->leftGame() returns true, noticed : protoss champaign
 		if(getPlayer() == BWAPI::Broodwar->self())
 			return AccessType::Dead;
 

@@ -249,7 +249,9 @@ struct BuildOrderIDDef
 };
 typedef SafeEnum<BuildOrderIDDef> BuildOrderID;
 
-std::list<CallBack> CB(int buildID, CallBackType type, std::list<CallBack> &cb = std::list<CallBack>());
+extern std::list<CallBack> nolist;
+
+std::list<CallBack>& CB(int buildID, CallBackType type, std::list<CallBack> &cb = nolist);
 
 class UnitToProduce
 {
@@ -324,18 +326,18 @@ public:
 	BuildOrder(BuildOrderID id = BuildOrderID::None, std::string name = "None");
 	BuildOrder(BWAPI::Race race, BuildOrderID id, std::string name);
 
-	int addItem(BWAPI::UnitType type, std::list<CallBack> &callBacks = std::list<CallBack>(), int count = 1, BuildingLocation position = BuildingLocation::Base);
-	int addItem(BWAPI::TechType type, std::list<CallBack> &callBacks = std::list<CallBack>());
-	int addItem(BWAPI::UpgradeType type, int level = 1, std::list<CallBack> &callBacks = std::list<CallBack>());
+      int addItem(BWAPI::UnitType type, std::list<CallBack> &callBacks = nolist, int count = 1, BuildingLocation position = BuildingLocation::Base);
+      int addItem(BWAPI::TechType type, std::list<CallBack> &callBacks = nolist);
+      int addItem(BWAPI::UpgradeType type, int level = 1, std::list<CallBack> &callBacks = nolist);
 
 	int addItem(BWAPI::UnitType type, int count, BuildingLocation position = BuildingLocation::Base, TaskType taskType = TaskType::BuildOrder);
 	int addItem(BWAPI::UnitType type, int count, TaskType taskType, BuildingLocation position = BuildingLocation::Base);
 
-	int addItem(BWAPI::UnitType type, TaskType taskType, std::list<CallBack> &callBacks = std::list<CallBack>(), int count = 1, BuildingLocation position = BuildingLocation::Base);
-	int addItem(BWAPI::TechType type, TaskType taskType, std::list<CallBack> &callBacks = std::list<CallBack>());
-	int addItem(BWAPI::UpgradeType type, int level, TaskType taskType, std::list<CallBack> &callBacks = std::list<CallBack>());
+      int addItem(BWAPI::UnitType type, TaskType taskType, std::list<CallBack> &callBacks = nolist, int count = 1, BuildingLocation position = BuildingLocation::Base);
+      int addItem(BWAPI::TechType type, TaskType taskType, std::list<CallBack> &callBacks = nolist);
+      int addItem(BWAPI::UpgradeType type, int level, TaskType taskType, std::list<CallBack> &callBacks = nolist);
 
-	int addOrder(Order orderType, std::list<CallBack> &callBacks = std::list<CallBack>());
+      int addOrder(Order orderType, std::list<CallBack> &callBacks = nolist);
 
 	void addProduce(BWAPI::UnitType type, int weight, int priority = 100, const Condition &unitCond = Condition(ConditionTest::None, true), const Condition &factoryCond = Condition(ConditionTest::None, true));
 
@@ -343,7 +345,7 @@ public:
 
 	void addSquad(SquadType type, int count = 1);
 
-	void addArmyBehaviour(ArmyBehaviour armyBehaiour, std::list<CallBack> &callBacks = std::list<CallBack>());
+      void addArmyBehaviour(ArmyBehaviour armyBehaiour, std::list<CallBack> &callBacks = nolist);
 
 	void setStartingCondition(Condition condition);
 
