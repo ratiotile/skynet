@@ -7,60 +7,60 @@
 
 bool ArconZealotKillUnDetected::update(const Goal &squadGoal, const UnitGroup &squadUnitGroup)
 {
-	if(mUnit->getOrder() == BWAPI::Orders::ArchonWarp)
-		return true;
+  if(mUnit->getOrder() == BWAPI::Orders::ArchonWarp)
+    return true;
 
-	const int minDistance = 32*5;
+  const int minDistance = 32*5;
 
-	Unit lurker;
-	int lurkerDistance = std::numeric_limits<int>::max();
+  Unit lurker;
+  int lurkerDistance = std::numeric_limits<int>::max();
       for (Unit unit : UnitTracker::Instance().selectAllEnemy())
-	{
-		if(unit->exists() && !unit->isDetected() && (unit->isCloaked() || unit->getType().hasPermanentCloak() || (unit->getType() == BWAPI::UnitTypes::Zerg_Lurker && unit->isBurrowed())))
-		{
-			int thisDistance = mUnit->getDistance(unit);
-			if(thisDistance < lurkerDistance)
-			{
-				lurkerDistance = thisDistance;
-				lurker = unit;
-			}
-		}
-	}
+  {
+    if(unit->exists() && !unit->isDetected() && (unit->isCloaked() || unit->getType().hasPermanentCloak() || (unit->getType() == BWAPI::UnitTypes::Zerg_Lurker && unit->isBurrowed())))
+    {
+      int thisDistance = mUnit->getDistance(unit);
+      if(thisDistance < lurkerDistance)
+      {
+        lurkerDistance = thisDistance;
+        lurker = unit;
+      }
+    }
+  }
 
-	if(!lurker || lurkerDistance > minDistance)
-		return false;
+  if(!lurker || lurkerDistance > minDistance)
+    return false;
 
-	BWAPI::UnitType typeToFind = mUnit->getType() == BWAPI::UnitTypes::Protoss_Archon ? BWAPI::UnitTypes::Protoss_Zealot : BWAPI::UnitTypes::Protoss_Archon;
-	Unit other = UnitTracker::Instance().selectAllUnits(typeToFind).getClosestUnit(lurker);
+  BWAPI::UnitType typeToFind = mUnit->getType() == BWAPI::UnitTypes::Protoss_Archon ? BWAPI::UnitTypes::Protoss_Zealot : BWAPI::UnitTypes::Protoss_Archon;
+  Unit other = UnitTracker::Instance().selectAllUnits(typeToFind).getClosestUnit(lurker);
 
-	if(!other)
-		return false;
+  if(!other)
+    return false;
 
-	int otherDistance = other->getDistance(lurker);
-	if(otherDistance > minDistance)
-		return false;
+  int otherDistance = other->getDistance(lurker);
+  if(otherDistance > minDistance)
+    return false;
 
-	if(typeToFind == BWAPI::UnitTypes::Protoss_Archon)
-	{
-		if(mUnit != UnitTracker::Instance().selectAllUnits(BWAPI::UnitTypes::Protoss_Zealot).getClosestUnit(lurker))
-			return false;
+  if(typeToFind == BWAPI::UnitTypes::Protoss_Archon)
+  {
+    if(mUnit != UnitTracker::Instance().selectAllUnits(BWAPI::UnitTypes::Protoss_Zealot).getClosestUnit(lurker))
+      return false;
 
-		mUnit->move(lurker->getPosition());
-		return true;
-	}
-	else
-	{
-		if(otherDistance <= 14)
-		{
-			mUnit->attack(other);
-			return true;
-		}
-		else
-		{
-			mUnit->move(other->getPosition());
-			return true;
-		}
-	}
+    mUnit->move(lurker->getPosition());
+    return true;
+  }
+  else
+  {
+    if(otherDistance <= 14)
+    {
+      mUnit->attack(other);
+      return true;
+    }
+    else
+    {
+      mUnit->move(other->getPosition());
+      return true;
+    }
+  }
 
-	return false;
+  return false;
 }
