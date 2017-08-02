@@ -76,7 +76,7 @@ public:
 	{
 	}
 
-	Condition &Condition::operator=(const Condition &other)
+      Condition &operator=(const Condition &other)
 	{
 		mType = other.mType;
 		mOperatorType = other.mOperatorType;

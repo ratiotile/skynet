@@ -242,7 +242,7 @@ void BuildOrderManagerClass::changeCurrentBuild(BuildOrderID ID)
 		mArmyBehavioursWaiting.clear();
 		mControlValues.clear();
 
-		for each(const OrderItem &item in buildOrder.getOrderItems())
+		for (const OrderItem &item : buildOrder.getOrderItems())
 		{
 			if(item.isFulfilled())
 				handleOrderItem(item);
@@ -250,7 +250,7 @@ void BuildOrderManagerClass::changeCurrentBuild(BuildOrderID ID)
 				mOrdersWaiting.push_back(item);
 		}
 
-		for each(const BuildItem &item in buildOrder.getBuildItems())
+		for (const BuildItem &item : buildOrder.getBuildItems())
 		{
 			if(item.isFulfilled())
 				handleBuildItem(item);
@@ -258,7 +258,7 @@ void BuildOrderManagerClass::changeCurrentBuild(BuildOrderID ID)
 				mItemsWaiting.push_back(item);
 		}
 
-		for each(const ArmyBehaviourItem &item in buildOrder.getArmyBehaviourItems())
+		for (const ArmyBehaviourItem &item : buildOrder.getArmyBehaviourItems())
 		{
 			if(item.isFulfilled())
 				handleArmyBehaviourItem(item);

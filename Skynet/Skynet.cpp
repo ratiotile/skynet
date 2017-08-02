@@ -67,12 +67,12 @@ void Skynet::onEnd(bool isWinner)
 
 void Skynet::onFrame()
 {
-  for each(BWAPI::Event BWAPIEvent in BWAPI::Broodwar->getEvents())
+  for (BWAPI::Event BWAPIEvent : BWAPI::Broodwar->getEvents())
   {
     if(BWAPIEvent.getType() == BWAPI::EventType::UnitDiscover)
       UnitTracker::Instance().onUnitDiscover(BWAPIEvent.getUnit());
   }
-  for each(BWAPI::Event BWAPIEvent in BWAPI::Broodwar->getEvents())
+  for (BWAPI::Event BWAPIEvent : BWAPI::Broodwar->getEvents())
   {
     if(BWAPIEvent.getType() == BWAPI::EventType::UnitDestroy)
       UnitTracker::Instance().onUnitDestroy(BWAPIEvent.getUnit());

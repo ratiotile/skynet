@@ -19,7 +19,7 @@ void ResourceManagerClass::update()
 	std::set<Base> bases = BaseTracker::Instance().getActiveBases(true);
 	if(mMyActiveBases != bases)
 	{
-		for each(Base base in mMyActiveBases)
+		for (Base base : mMyActiveBases)
 		{
 			std::set<Base>::iterator it = bases.find(base);
 			if(it == bases.end())
@@ -35,7 +35,7 @@ void ResourceManagerClass::update()
 	}
 
 	unsigned int neededWorkers = 0;
-	for each(Base base in mMyActiveBases)
+	for (Base base : mMyActiveBases)
 	{
 		if(!base->getResourceDepot() || !base->getResourceDepot()->exists())
 			continue;
@@ -55,7 +55,7 @@ void ResourceManagerClass::update()
 				++resourceIT;
 		}
 
-		for each(Unit mineral in minerals)
+		for (Unit mineral : minerals)
 		{
 			neededWorkers += 2;
 			if(mResourceTasks[base].count(mineral) == 0)
@@ -67,7 +67,7 @@ void ResourceManagerClass::update()
 			}
 		}
 
-		for each(Unit refinery in refineries)
+		for (Unit refinery : refineries)
 		{
 			if(refinery->getPlayer() == BWAPI::Broodwar->self())
 			{
@@ -94,7 +94,7 @@ void ResourceManagerClass::update()
 
 	neededWorkers = std::min(neededWorkers, 50u);
 	neededWorkers -= std::min(numWorkers, neededWorkers);
-	neededWorkers = std::min(neededWorkers, UnitTracker::Instance().selectAllUnits(BWAPI::Broodwar->self()->getRace().getWorker().whatBuilds().first).size() + 1);
+      neededWorkers = std::min(neededWorkers, (unsigned)UnitTracker::Instance().selectAllUnits(BWAPI::Broodwar->self()->getRace().getWorker().whatBuilds().first).size() + 1);
 
 	mTaskPump.changeTargetQuantity(neededWorkers);
 	mTaskPump.update();

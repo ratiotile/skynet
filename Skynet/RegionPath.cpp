@@ -13,7 +13,7 @@ void RegionPath::addNode(Region reg)
 void RegionPath::drawPath()
 {
 	Region previousRegion;
-	for each(const Region &reg in path)
+	for (const Region &reg : path)
 	{
 		if(previousRegion)
 			BWAPI::Broodwar->drawLineMap(reg->getCenter().x, reg->getCenter().y, previousRegion->getCenter().x, previousRegion->getCenter().y, BWAPI::Colors::Purple);

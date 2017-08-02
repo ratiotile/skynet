@@ -27,7 +27,7 @@ void UnitPredictorClass::deletePrediction(Unit unit)
 
 Unit UnitPredictorClass::onNewUnit(BWAPI::Unit newUnit)
 {
-	for each(Unit unit in mUnits)
+	for (Unit unit : mUnits)
 	{
 		if(unit->getType() == newUnit->getType() && unit->getPlayer() == newUnit->getPlayer())
 		{

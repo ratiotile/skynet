@@ -42,7 +42,7 @@ public:
 		, mUnitFlags(other.mUnitFlags)
 	{}
 
-	UnitFilter &UnitFilter::operator=(const UnitFilter &other)
+      UnitFilter &operator=(const UnitFilter &other)
 	{
 		mType = other.mType;
 		mOperatorType = other.mOperatorType;

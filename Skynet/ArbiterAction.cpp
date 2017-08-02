@@ -24,7 +24,7 @@ bool ArbiterAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGrou
 			stasisUrgently = true;
 
 		UnitGroup stasisChoices;
-		for each(Unit enemy in UnitTracker::Instance().selectAllEnemy())
+            for (Unit enemy : UnitTracker::Instance().selectAllEnemy())
 		{
 			if(!UnitHelper::isArmyUnit(enemy->getType()))
 				continue;
@@ -62,7 +62,7 @@ bool ArbiterAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGrou
 	}
 
 	UnitGroup unitsToCloak;
-	for each(Unit unit in squadUnitGroup)
+      for (Unit unit : squadUnitGroup)
 	{
 		if(!UnitHelper::isArmyUnit(unit->getType()))
 			continue;

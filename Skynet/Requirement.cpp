@@ -279,12 +279,12 @@ std::map<int, int> Requirement::earliestUnitTime(int startTime, int endTime, std
 	int bestStartTime = Requirement::maxTime;
 	int bestDelay = Requirement::maxTime;
 
-	for each(Unit unit in UnitTracker::Instance().selectAllUnits())
+	for (Unit unit : UnitTracker::Instance().selectAllUnits())
 	{
 		if(currentUnits.count(unit) > 0)
 			continue;
 
-		if(!mUnitFilter.passesFilter(unit))//TODO: only checks if it currently passes the filter, but some it can tell when in the future it will pass, might be worth implementing
+		if(!mUnitFilter.passesFilter(unit))//TODO: only checks if it currently passes the filter, but some it can tell when : the future it will pass, might be worth implementing
 			continue;
 
 		int delay = 0;
@@ -307,12 +307,12 @@ std::map<int, int> Requirement::earliestUnitTime(int startTime, int endTime, std
 			for(std::map<int, int>::const_iterator it = currentTimes.begin(); it != currentTimes.end(); ++it)
 				currentTimesPlusDelay[it->first + delay] = it->second;
 
-			// Find the earliest time in these blocks
+			// Find the earliest time : these blocks
 			std::map<int, int>::const_iterator it = currentTimesPlusDelay.begin();
 			if(it != currentTimesPlusDelay.end())
 			{
 				// Save it if its the best we have found, also prefer if the delay is shorter so it
-				// doesn't choose a unit really far away even though it will make it in time
+				// doesn't choose a unit really far away even though it will make it : time
 				if(it->first < bestStartTime || (it->first == bestStartTime && delay < bestDelay))
 				{
 					mUnit = unit;
@@ -352,7 +352,7 @@ void Requirement::reserve(int frameTime)
 int Requirement::earliestTimeForType(BWAPI::UnitType unitType)
 {
 	int thisTime = Requirement::maxTime;
-	for each(Unit requiredUnit in UnitTracker::Instance().selectAllUnits(unitType))
+	for (Unit requiredUnit : UnitTracker::Instance().selectAllUnits(unitType))
 	{
 		if(requiredUnit->isCompleted())
 			return BWAPI::Broodwar->getFrameCount();

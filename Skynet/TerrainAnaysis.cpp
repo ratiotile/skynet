@@ -56,11 +56,11 @@ private:
 
 void TerrainAnaysisClass::finaliseConnectivity()
 {
-	for each(Region region in mRegions)
+	for (Region region : mRegions)
 	{
 		WalkInRegionComp goCompare(region);
 
-		for each(Chokepoint chokepoint in mChokepoints)
+		for (Chokepoint chokepoint : mChokepoints)
 		{
 			TilePosition pos = MapHelper::spiralSearch(TilePosition(chokepoint->getCenter()), goCompare, 24);
 
@@ -433,7 +433,7 @@ void TerrainAnaysisClass::createRegions()
 					tileToLastMinima.erase(*currentTile);
 					unvisitedTiles.erase(*currentTile);
 
-					for each(WalkPosition nextTile in tileToChildren[*currentTile])
+					for (WalkPosition nextTile : tileToChildren[*currentTile])
 					{
 						chokeChildren.insert(nextTile);
 					}
@@ -479,7 +479,7 @@ void TerrainAnaysisClass::createRegions()
 			std::set<WalkPosition>::iterator currentTile = tileSteps.begin();
 			++regionSize;
 
-			for each(WalkPosition nextTile in tileToChildren[*currentTile])
+			for (WalkPosition nextTile : tileToChildren[*currentTile])
 			{
 				tileSteps.insert(nextTile);
 			}
@@ -511,7 +511,7 @@ public:
 		, mBestRating(std::numeric_limits<unsigned int>::max())
 	{}
 
-	bool operator()(TilePosition &location)
+      bool operator()(TilePosition location)
 	{
 		for(int x = location.x; x < location.x + BWAPI::UnitTypes::Protoss_Nexus.tileWidth(); ++x)
 		{
@@ -526,7 +526,7 @@ public:
 		}
 
 		unsigned int distanceToResources = 0;
-		for each(const Unit &resource in *mResources)
+		for (const Unit &resource : *mResources)
 		{
 			const BWAPI::UnitType &resourceType = resource->getType();
 			const TilePosition &resourceTilePosition = resource->getTilePosition();
@@ -592,7 +592,7 @@ void TerrainAnaysisClass::createBases()
 {
 	//Create a set of all Geysers and all mineral patches with more than 200 minerals
 	UnitGroup resources = UnitTracker::Instance().getGeysers();
-	for each(Unit mineral in UnitTracker::Instance().getMinerals())
+	for (Unit mineral : UnitTracker::Instance().getMinerals())
 	{
 		if(mineral->getResources() > 200)
 			resources.insert(mineral);
@@ -609,7 +609,7 @@ void TerrainAnaysisClass::createBases()
 	std::map<TilePosition, Region> baseToRegion;
 	std::map<Region, std::set<TilePosition>> baseToCreateFromRegion;
 
-	for each(UnitGroup resourceCluster in resourceClusters)
+	for (UnitGroup resourceCluster : resourceClusters)
 	{
 		TilePosition baseLocation;
 		PossibleLocationCompare locationCompare(&resourceCluster, &baseLocation);
@@ -636,7 +636,7 @@ void TerrainAnaysisClass::createBases()
 		}
 	}
 
-	for each(TilePosition base in basesToCreate)
+	for (TilePosition base : basesToCreate)
 	{
 		Region region = mTileToRegion[base.x * 4][base.y * 4];
 		if(region)
@@ -659,7 +659,7 @@ void TerrainAnaysisClass::createBases()
 			if(!region || region->getClearance() < 80)
 			{
 				int distance = std::numeric_limits<int>::max();
-				for each(Region reg in mRegions)
+				for (Region reg : mRegions)
 				{
 					if(reg->getClearance() < 80)
 						continue;
@@ -703,7 +703,7 @@ void TerrainAnaysisClass::createBases()
 				TilePosition baseToUse;
 				int distance = std::numeric_limits<int>::max();
 
-				for each(TilePosition base in baseToCreateFromRegion[region])
+				for (TilePosition base : baseToCreateFromRegion[region])
 				{
 					int thisDistance = Position(base).getApproxDistance(Position(x*32, y*32));
 					if(thisDistance < distance)
@@ -719,12 +719,12 @@ void TerrainAnaysisClass::createBases()
 		}
 	}
 
-	for each(TilePosition startLocation in BWAPI::Broodwar->getStartLocations())
+	for (TilePosition startLocation : BWAPI::Broodwar->getStartLocations())
 	{
 		baseToCreateIsStartLocation[tileToBase[startLocation.x][startLocation.y]] = true;
 	}
 
-	for each(TilePosition base in basesToCreate)
+	for (TilePosition base : basesToCreate)
 	{
 		Base newBase;
 		if(baseIsRegionBase[base])

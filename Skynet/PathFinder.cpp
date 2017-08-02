@@ -101,7 +101,7 @@ public:
 	{
 		int h = 0;
 
-		for each(Unit enemy in mEnemies)
+		for (Unit enemy : mEnemies)
 		{
 			h += mMmaxHValue - (int)position.getDistance(enemy->getTilePosition());
 		}
@@ -175,14 +175,14 @@ RegionPath PathFinderClass::CreateRegionPath(Region start, Region target)
 		openRegions.pop();
 		closedRegions.insert(region);
 
-		for each(Chokepoint choke in region->getChokepoints())
+		for (Chokepoint choke : region->getChokepoints())
 		{
 			if(!choke)
-				BWAPI::Broodwar->printf("Chokepoint choke in PathFinderClass::CreateRegionPath null");
+				BWAPI::Broodwar->printf("Chokepoint choke : PathFinderClass::CreateRegionPath null");
 			if(!choke->getRegions().first)
-				BWAPI::Broodwar->printf("choke->getRegions().first in PathFinderClass::CreateRegionPath null");
+				BWAPI::Broodwar->printf("choke->getRegions().first : PathFinderClass::CreateRegionPath null");
 			if(!choke->getRegions().second)
-				BWAPI::Broodwar->printf("choke->getRegions().second in PathFinderClass::CreateRegionPath null");
+				BWAPI::Broodwar->printf("choke->getRegions().second : PathFinderClass::CreateRegionPath null");
 
 			Region other = choke->getRegions().first;
 			if(other == region)
@@ -234,11 +234,11 @@ PositionPath PathFinderClass::CreateCheapWalkPath(Position start, Position targe
 	path.path.push_back(start);
 
 	Region previousRegion;
-	for each(Region region in regionPath.path)
+	for (Region region : regionPath.path)
 	{
 		if(previousRegion)
 		{
-			for each(Chokepoint choke in region->getChokepoints())
+			for (Chokepoint choke : region->getChokepoints())
 			{
 				if(choke->getRegions().first == previousRegion || choke->getRegions().second == previousRegion)
 				{

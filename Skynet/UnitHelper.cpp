@@ -7,7 +7,7 @@ bool UnitHelper::unitProducesGround(BWAPI::UnitType type)
 	static std::set<BWAPI::UnitType> unitData;
 	if(unitData.empty())
 	{
-		for each(BWAPI::UnitType type in BWAPI::UnitTypes::allUnitTypes())
+		for (BWAPI::UnitType type : BWAPI::UnitTypes::allUnitTypes())
 		{
 			if(!type.isFlyer() && type.whatBuilds().first.isBuilding())
 				unitData.insert(type.whatBuilds().first);
@@ -36,12 +36,12 @@ std::vector<UnitGroup> UnitHelper::getClusters(const UnitGroup &units, int dista
 {
 	std::vector<UnitGroup> clusters;
 
-	for each(Unit unit in units)
+	for (Unit unit : units)
 	{
 		std::vector<size_t> clustersInRange;
 		for(size_t i = 0; i < clusters.size(); ++i)
 		{
-			for each(Unit clusterUnit in clusters[i])
+			for (Unit clusterUnit : clusters[i])
 			{
 				if(unit->getPosition().getApproxDistance(clusterUnit->getPosition()) <= distance)
 				{
@@ -63,7 +63,7 @@ std::vector<UnitGroup> UnitHelper::getClusters(const UnitGroup &units, int dista
 
 			for(size_t i = 1; i < clustersInRange.size(); ++i)
 			{
-				for each(Unit clusterUnit in clusters[clustersInRange[i]])
+				for (Unit clusterUnit : clusters[clustersInRange[i]])
 				{
 					clusters[clustersInRange[0]].insert(clusterUnit);
 				}

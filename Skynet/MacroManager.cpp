@@ -138,13 +138,13 @@ void MacroManagerClass::update()
 	{
 		int y = 0;
 		BWAPI::Broodwar->drawTextScreen(5, y+=10, "Units can produce:");
-		for each(UnitToProduce unit in mLastUnitsToProduce)
+		for (UnitToProduce unit : mLastUnitsToProduce)
 		{
 			BWAPI::Broodwar->drawTextScreen(5, y+=10, "%d %d %s", unit.getPriority(), unit.getUnitWeight(), unit.getUnitType().getName().c_str());
 		}
 		y+=10;
 
-		BWAPI::Broodwar->drawTextScreen(5, y+=10, "Units in queue:");
+		BWAPI::Broodwar->drawTextScreen(5, y+=10, "Units : queue:");
 		for(std::list<std::pair<TaskPointer, BWAPI::UnitType>>::iterator it = mUnitProduce.begin(); it != mUnitProduce.end(); ++it)
 		{
 			if(it->first->inProgress())
@@ -219,7 +219,7 @@ void MacroManagerClass::updateUnitProduction()
 
 	// TODO: try to maintain some sort of balance between buildings
 
-	for each(UnitToProduce unit in mLastUnitsToProduce)
+	for (UnitToProduce unit : mLastUnitsToProduce)
 	{
 		int plannedTotalUnit = UnitTracker::Instance().selectAllUnits(unit.getUnitType()).size();
 		totalPerProductionBuilding[unit.getUnitType().whatBuilds().first] += plannedTotalUnit;
@@ -238,7 +238,7 @@ void MacroManagerClass::updateUnitProduction()
 		}
 	}
 
-	for each(std::pair<BWAPI::UnitType, int> totalPair in totalPerProductionBuilding)
+	for (std::pair<BWAPI::UnitType, int> totalPair : totalPerProductionBuilding)
 	{
 		int buildings = UnitTracker::Instance().selectAllUnits(totalPair.first).size() * 2;
 		int queued = mTasksPerProductionType[totalPair.first].size();
@@ -247,7 +247,7 @@ void MacroManagerClass::updateUnitProduction()
 		{
 			BWAPI::UnitType chosenUnit = BWAPI::UnitTypes::None;
 			float biggestDifference = std::numeric_limits<float>::max();
-			for each(std::pair<BWAPI::UnitType, int> producePair in UnitToBuilding[totalPair.first])
+			for (std::pair<BWAPI::UnitType, int> producePair : UnitToBuilding[totalPair.first])
 			{
 				float neededRatio = float(producePair.second) / float(totalWeightPerBuilding[totalPair.first]);
 				float currentRatio = 0;
@@ -288,7 +288,7 @@ void MacroManagerClass::onChangeBuild()
 
 	mNormalUnits = BuildOrderManager::Instance().getCurrentBuild().getUnitsToProduce();
 
-	for each(UnitToProduce unit in mNormalUnits)
+	for (UnitToProduce unit : mNormalUnits)
 	{
 		double mineralToGasRatio = unit.getUnitType().gasPrice() == 0 ? 1 : double(unit.getUnitType().mineralPrice())/double(unit.getUnitType().gasPrice());
 		double gasToMineralRatio = unit.getUnitType().mineralPrice() == 0 ? 1 : double(unit.getUnitType().gasPrice())/double(unit.getUnitType().mineralPrice());
@@ -320,19 +320,19 @@ void MacroManagerClass::onChangeBuild()
 	std::set<BWAPI::TechType> techSet;
 	std::set<BWAPI::UpgradeType> upgradeSet;
 
-	for each(UnitToProduce unit in normalWithExtra)
+	for (UnitToProduce unit : normalWithExtra)
 	{
-		for each(BWAPI::UnitType type in getNeededUnits(unit.getUnitType()))
+		for (BWAPI::UnitType type : getNeededUnits(unit.getUnitType()))
 		{
 			mTechItemsToCreate.push_back(MacroItem(type, unit.getPriority()));
 		}
 
-		for each(BWAPI::TechType tech in unit.getUnitType().abilities())
+		for (BWAPI::TechType tech : unit.getUnitType().abilities())
 		{
 			techSet.insert(tech);
 		}
 
-		for each(BWAPI::UpgradeType upgrade in unit.getUnitType().upgrades())
+		for (BWAPI::UpgradeType upgrade : unit.getUnitType().upgrades())
 		{
 			upgradeSet.insert(upgrade);
 		}
@@ -349,20 +349,20 @@ void MacroManagerClass::onChangeBuild()
 			upgradeSet.insert(BWAPI::UpgradeTypes::Protoss_Air_Weapons);
 	}
 
-	for each(BWAPI::TechType tech in techSet)
+	for (BWAPI::TechType tech : techSet)
 	{
 		if(mTechPriorityMap[tech] < 30)
 			continue;
 
 		mTechItemsToCreate.push_back(MacroItem(tech, mTechPriorityMap[tech]));
 
-		for each(BWAPI::UnitType type in getNeededUnits(tech))
+		for (BWAPI::UnitType type : getNeededUnits(tech))
 		{
 			mTechItemsToCreate.push_back(MacroItem(type, mTechPriorityMap[tech]));
 		}
 	}
 
-	for each(BWAPI::UpgradeType upgrade in upgradeSet)
+	for (BWAPI::UpgradeType upgrade : upgradeSet)
 	{
 		if(mUpgradePriorityMap[upgrade] < 30)
 			continue;
@@ -372,7 +372,7 @@ void MacroManagerClass::onChangeBuild()
 			int priority = mUpgradePriorityMap[upgrade] - ((i-1)*10);
 			mTechItemsToCreate.push_back(MacroItem(upgrade, i, priority));
 
-			for each(BWAPI::UnitType type in getNeededUnits(upgrade, i))
+			for (BWAPI::UnitType type : getNeededUnits(upgrade, i))
 			{
 				mTechItemsToCreate.push_back(MacroItem(type, priority));
 			}
@@ -431,7 +431,7 @@ void MacroManagerClass::updateObserverProduction()
 
 void MacroManagerClass::updateProductionProduction()
 {
-	for each(UnitToProduce unit in mNormalUnits)
+	for (UnitToProduce unit : mNormalUnits)
 	{
 		if(hasRequirements(unit.getUnitType()) && unit.canBuildFactory())
 		{
@@ -440,7 +440,7 @@ void MacroManagerClass::updateProductionProduction()
 				whatBuilds = BWAPI::UnitTypes::Zerg_Hatchery;
 
 			bool unstartedBuild = false;
-			for each(TaskPointer task in mTasksPerProducedType[whatBuilds])
+			for (TaskPointer task : mTasksPerProducedType[whatBuilds])
 			{
 				if(!task->inProgress())
 					unstartedBuild = true;
@@ -449,7 +449,7 @@ void MacroManagerClass::updateProductionProduction()
 				continue;
 
 			int idleOfThis = 0;
-			for each(Unit building in UnitTracker::Instance().selectAllUnits(whatBuilds))
+			for (Unit building : UnitTracker::Instance().selectAllUnits(whatBuilds))
 			{
 				if(building->isCompleted() && !building->isTraining())
 					++idleOfThis;
@@ -565,7 +565,7 @@ void MacroManagerClass::addNeeded(std::set<BWAPI::UnitType> &neededUnits)
 {
 	bool addedUnits = false;
 	std::set<BWAPI::UnitType> tempList;
-	for each(BWAPI::UnitType type in neededUnits)
+	for (BWAPI::UnitType type : neededUnits)
 	{
 		BWAPI::UnitType whatBuilds = type.whatBuilds().first;
 		if(whatBuilds == BWAPI::UnitTypes::Zerg_Larva)
@@ -599,7 +599,7 @@ void MacroManagerClass::addNeeded(std::set<BWAPI::UnitType> &neededUnits)
 int MacroManagerClass::getPlannedCount(BWAPI::UnitType unitType)
 {
 	int count = 0;
-	for each(TaskPointer task in mTasksPerProducedType[unitType])
+	for (TaskPointer task : mTasksPerProducedType[unitType])
 	{
 		if(!task->inProgress())
 			++count;
@@ -621,7 +621,7 @@ bool MacroManagerClass::isPlanningUnit(BWAPI::UnitType unitType)
 int MacroManagerClass::getPlannedCount(BWAPI::TechType techType)
 {
 	int count = 0;
-	for each(TaskPointer task in mTasksPerTechType[techType])
+	for (TaskPointer task : mTasksPerTechType[techType])
 	{
 		if(!task->inProgress())
 			++count;
@@ -643,7 +643,7 @@ bool MacroManagerClass::isPlanningTech(BWAPI::TechType techType)
 int MacroManagerClass::getPlannedCount(BWAPI::UpgradeType upgradeType, int level)
 {
 	int count = 0;
-	for each(TaskPointer task in mTasksPerUpgradeType[upgradeType][level])
+	for (TaskPointer task : mTasksPerUpgradeType[upgradeType][level])
 	{
 		if(!task->inProgress())
 			++count;

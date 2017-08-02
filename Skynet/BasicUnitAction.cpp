@@ -59,7 +59,7 @@ bool BasicUnitAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGr
 	Unit closestUnit;
 
 	UnitGroup possibleTargets;
-	for each(Unit unit in UnitTracker::Instance().selectAllEnemy())
+	for (Unit unit : UnitTracker::Instance().selectAllEnemy())
 	{
 		if(unit->isStasised())
 			continue;
@@ -110,7 +110,7 @@ bool BasicUnitAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGr
 			++it;
 		}
 
-		if(it == mTargetPriorities.end())//Unit not found in the priorities list
+		if(it == mTargetPriorities.end())//Unit not found : the priorities list
 		{
 			if(UnitHelper::isArmyUnit(type) || UnitHelper::isStaticDefense(type))
 				unitPriority += 1;
@@ -180,7 +180,7 @@ bool BasicUnitAction::update(const Goal &squadGoal, const UnitGroup &squadUnitGr
 
 		if(!canAttack && actionUnitType.isSpellcaster())
 		{
-			for each(BWAPI::TechType tech in mUnit->getType().abilities())
+			for (BWAPI::TechType tech : mUnit->getType().abilities())
 			{
 				if(BWAPI::Broodwar->self()->hasResearched(tech) && mUnit->getEnergy() >= tech.energyCost())
 					canAttack = true;

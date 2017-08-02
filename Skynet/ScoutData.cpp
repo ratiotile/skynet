@@ -46,7 +46,7 @@ Position ScoutDataClass::getNextPosition(Position pos)
 		Position closestPosition = BWAPI::Positions::None;
 		double closestDistance = std::numeric_limits<double>::max();
 
-		for each(Position position in mPositions)
+		for (Position position : mPositions)
 		{
 			double distance = pos == BWAPI::Positions::None ? position.getApproxDistance(mBase->getCenterLocation()) : position.getApproxDistance(pos);
 			if(distance < closestDistance)
@@ -71,7 +71,7 @@ Position ScoutDataClass::getLastPosition(Position pos)
 		Position closestPosition = BWAPI::Positions::None;
 		double closestDistance = 0;
 
-		for each(Position position in mPositions)
+		for (Position position : mPositions)
 		{
 			double distance = pos == BWAPI::Positions::None ? position.getApproxDistance(mBase->getCenterLocation()) : position.getApproxDistance(pos);
 			if(distance > closestDistance)
@@ -103,7 +103,7 @@ void ScoutDataClass::loadPositions()
 		}
 	case ScoutType::ThoroughSearch:
 		{
-			for each(TilePosition tile in mBase->getTiles())
+			for (TilePosition tile : mBase->getTiles())
 			{
 				if(BWAPI::Broodwar->isBuildable(tile))
 					mPositions.insert(Position(tile.x*32+16, tile.y*32+16));
@@ -138,7 +138,7 @@ void ScoutDataClass::checkPositions()
 
 void ScoutDataClass::drawDebug(BWAPI::Color colour)
 {
-	for each(Position position in mPositions)
+	for (Position position : mPositions)
 	{
 		BWAPI::Broodwar->drawCircleMap(position.x, position.y, 16, colour);
 	}

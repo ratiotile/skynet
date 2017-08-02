@@ -15,7 +15,7 @@ BlockedPathManagerClass::BlockedPathManagerClass()
 
 void BlockedPathManagerClass::onBegin()
 {
-	for each(Unit mineral in UnitTracker::Instance().getMinerals())
+	for (Unit mineral : UnitTracker::Instance().getMinerals())
 	{
 		if(mineral->getResources() <= 1)
 		{
@@ -39,7 +39,7 @@ void BlockedPathManagerClass::onBegin()
 
 				Chokepoint closestChoke;
 				int closestDistance = std::numeric_limits<int>::max();
-				for each(Chokepoint chokepoint in TerrainAnaysis::Instance().getChokepoints())
+				for (Chokepoint chokepoint : TerrainAnaysis::Instance().getChokepoints())
 				{
 					int distance = chokepoint->getCenter().getApproxDistance(mineralPos);
 					if(distance < closestDistance)
@@ -57,7 +57,7 @@ void BlockedPathManagerClass::onBegin()
 
 					Base closestBase;
 					int closestDistance = std::numeric_limits<int>::max();
-					for each(Base base in bases)
+					for (Base base : bases)
 					{
 						if(base->isStartLocation())
 							continue;
@@ -94,7 +94,7 @@ void BlockedPathManagerClass::update()
 	{
 		mMyBases = myBases;
 
-		for each(Base base in mMyBases)
+		for (Base base : mMyBases)
 		{
 			if(mBlockingMinerals.count(base) != 0)
 			{

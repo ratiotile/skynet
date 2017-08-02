@@ -9,7 +9,7 @@ void ScoutManagerClass::onBegin()
 {
 	Base lastBase;
 	std::set<Base> scoutBases;
-	for each(Base base in BaseTracker::Instance().getAllBases())
+	for (Base base : BaseTracker::Instance().getAllBases())
 	{
 		mLastScoutTime[base] = 1500;
 		mLastScoutType[base] = ScoutType::None;
@@ -31,7 +31,7 @@ void ScoutManagerClass::onBegin()
 	{
 		Base closestBase;
 		int distance = std::numeric_limits<int>::max();
-		for each(Base base in scoutBases)
+		for (Base base : scoutBases)
 		{
 			int thisDistance = MapHelper::getGroundDistance(base->getCenterLocation(), lastBase->getCenterLocation());
 			if(thisDistance < distance)
@@ -64,7 +64,7 @@ void ScoutManagerClass::update()
 	bool performThoroughSearch = (BaseTracker::Instance().getEnemyBases().empty() && time > 4000);
 	ScoutType scoutType = performThoroughSearch ? ScoutType::ThoroughSearch : ScoutType::BaseScout;
 
-	for each(Base base in BaseTracker::Instance().getAllBases())
+	for (Base base : BaseTracker::Instance().getAllBases())
 	{
 		if(mCurrentScoutType[base] != ScoutType::None)
 			continue;
@@ -133,7 +133,7 @@ void ScoutManagerClass::update()
 	updateWorkerScouts();
 
 #ifdef SKYNET_DRAW_DEBUG
-	for each(Base base in BaseTracker::Instance().getAllBases())
+	for (Base base : BaseTracker::Instance().getAllBases())
 	{
 		int x = base->getRegion()->getCenter().x;
 		int y = base->getRegion()->getCenter().y;

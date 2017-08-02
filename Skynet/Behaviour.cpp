@@ -29,7 +29,7 @@ void Behaviour::addMicroAction(MicroAction action)
 
 void Behaviour::update(const Goal &squadGoal, const UnitGroup &squadUnitGroup)
 {
-	for each(MicroAction action in mMicroActions)
+	for (MicroAction action : mMicroActions)
 	{
 		if(action->update(squadGoal, squadUnitGroup))
 			break;
@@ -46,7 +46,7 @@ void Behaviour::update(const Goal &squadGoal, const UnitGroup &squadUnitGroup)
 
 void Behaviour::onDeleted()
 {
-	for each(MicroAction action in mMicroActions)
+	for (MicroAction action : mMicroActions)
 	{
 		action->removeUnit(mUnit);
 	}

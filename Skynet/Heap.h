@@ -30,7 +30,7 @@ public:
 		if(mData.empty())
 			return;
 
-		std::map<Key, int>::iterator it = mMapping.find(mData.front().first);
+            typename std::map<Key, int>::iterator it = mMapping.find(mData.front().first);
 		if(it != mMapping.end())
 		{
 			it->second = 0;
@@ -50,7 +50,7 @@ public:
 
 	bool set(const Key &key, const Val &val)
 	{
-		std::map<Key, int>::iterator it = mMapping.find(key);
+            typename std::map<Key, int>::iterator it = mMapping.find(key);
 		if(it == mMapping.end())
 		{
 			push(std::make_pair(key, val));
@@ -72,14 +72,14 @@ public:
 
 	const Val &get(const Key &key) const
 	{
-		std::map<Key, int>::const_iterator it = mMapping.find(key);
+            typename std::map<Key, int>::const_iterator it = mMapping.find(key);
 		int index = it->second;
 		return mData[index].second;
 	}
 
 	bool contains(const Key &key) const
 	{
-		std::map<Key, int>::const_iterator it = mMapping.find(key);
+            typename std::map<Key, int>::const_iterator it = mMapping.find(key);
 		return (it != mMapping.end());
 	}
 
@@ -96,7 +96,7 @@ public:
 
 	bool erase(const Key &key)
 	{
-		std::map<Key, int>::iterator it = mMapping.find(key);
+            typename std::map<Key, int>::iterator it = mMapping.find(key);
 		if(it == mMapping.end())
 			return false;
 

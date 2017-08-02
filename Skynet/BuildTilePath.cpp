@@ -14,7 +14,7 @@ void BuildTilePath::addNode(TilePosition pos)
 void BuildTilePath::drawPath()
 {
 	TilePosition previousTile = BWAPI::TilePositions::None;
-	for each(const TilePosition &pos in path)
+	for (const TilePosition &pos : path)
 	{
 		if(previousTile != BWAPI::TilePositions::None)
 			BWAPI::Broodwar->drawLineMap(pos.x * 32 + 16, pos.y * 32 + 16, previousTile.x * 32 + 16, previousTile.y * 32 + 16, BWAPI::Colors::Yellow);
@@ -25,7 +25,7 @@ void BuildTilePath::drawPath()
 
 bool BuildTilePath::isStillValid()
 {
-	for each(const TilePosition &pos in path)
+	for (const TilePosition &pos : path)
 	{
 		if(!BuildingPlacer::Instance().isTileWalkable(pos))
 			return false;

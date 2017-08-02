@@ -20,6 +20,8 @@ BuildOrder::BuildOrder(BWAPI::Race race, BuildOrderID id, std::string name)
 {
 }
 
+std::list<CallBack> nolist;
+
 int BuildOrder::addItem(BWAPI::UnitType type, std::list<CallBack> &callBacks, int count, BuildingLocation position)
 {
 	return addItem(type, TaskType::BuildOrder, callBacks, count, position);
@@ -37,12 +39,12 @@ int BuildOrder::addItem(BWAPI::UpgradeType type, int level, std::list<CallBack> 
 
 int BuildOrder::addItem(BWAPI::UnitType type, int count, BuildingLocation position, TaskType taskType)
 {
-	return addItem(type, taskType, std::list<CallBack>(), count, position);
+      return addItem(type, taskType, nolist, count, position);
 }
 
 int BuildOrder::addItem(BWAPI::UnitType type, int count, TaskType taskType, BuildingLocation position)
 {
-	return addItem(type, taskType, std::list<CallBack>(), count, position);
+      return addItem(type, taskType, nolist, count, position);
 }
 
 int BuildOrder::addItem(BWAPI::UnitType type, TaskType taskType, std::list<CallBack> &callBacks, int count, BuildingLocation position)
@@ -121,9 +123,9 @@ float BuildOrder::getWinRate(BuildOrderID currentBuild) const
 	return winRate;
 }
 
-std::list<CallBack> CB(int buildID, CallBackType type, std::list<CallBack> &cb)
+std::list<CallBack>& CB(int buildID, CallBackType type, std::list<CallBack> &cb)
 {
-	cb.push_back(CallBack(buildID, type));
+      if (&cb != &nolist) cb.push_back(CallBack(buildID, type));
 
 	return cb;
 }

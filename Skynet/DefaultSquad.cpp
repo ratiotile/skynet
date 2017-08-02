@@ -53,7 +53,7 @@ BorderPosition getLargestChoke(const std::set<BorderPosition> &chokes)
 {
 	int largestChokeSize = 0;
 	BorderPosition largestChoke;
-	for each(BorderPosition border in chokes)
+	for (BorderPosition border : chokes)
 	{
 		int chokeSize = border.mChoke->getClearance();
 		if(chokeSize > largestChokeSize)
@@ -76,7 +76,7 @@ bool DefaultSquadTask::update()
 	Base baseToDefend;
 	bool baseUnderAttack = false;
 	const int mySupply = BWAPI::Broodwar->self()->supplyUsed();
-	for each(Base base in BaseTracker::Instance().getPlayerBases())
+	for (Base base : BaseTracker::Instance().getPlayerBases())
 	{
 		const int techBuildings = base->getNumberOfTechBuildings();
 		if(!base->getEnemyThreats().empty() && (techBuildings > 0 || (!base->isMinedOut() && base->getResourceDepot())))
@@ -96,7 +96,7 @@ bool DefaultSquadTask::update()
 
 	UnitGroup avoidGroup;
 	UnitGroup engageGroup;
-	for each(const UnitGroup &unitGroup in PlayerTracker::Instance().getEnemyClusters())
+	for (const UnitGroup &unitGroup : PlayerTracker::Instance().getEnemyClusters())
 	{
 		if(!hasMiningBases && mUnits.canMajorityAttack(unitGroup))
 		{
@@ -126,11 +126,11 @@ bool DefaultSquadTask::update()
 
 	if(squadsGoal.getGoalType() == GoalType::None)
 	{
-		for each(Base base in BaseTracker::Instance().getPlayerBases())
+		for (Base base : BaseTracker::Instance().getPlayerBases())
 		{
 			if(base->isContested())
 			{
-				for each(Unit building in base->getBuildings())
+				for (Unit building : base->getBuildings())
 				{
 					if(BWAPI::Broodwar->self()->isEnemy(building->getPlayer()))
 					{
@@ -150,7 +150,7 @@ bool DefaultSquadTask::update()
 		int enemyKnownSupply = 0;
 		int enemyGuessSupply = 0;
 
-		for each(Unit unit in UnitTracker::Instance().selectAllEnemy())
+		for (Unit unit : UnitTracker::Instance().selectAllEnemy())
 		{
 			int supply = unit->getType().supplyRequired();
 			if(UnitHelper::isStaticDefense(unit->getType()))
@@ -164,7 +164,7 @@ bool DefaultSquadTask::update()
 
 		int alliesSize = 1;
 		std::map<BWAPI::Force, int> enemyForces;
-		for each(Player player in BWAPI::Broodwar->getPlayers())
+		for (Player player : BWAPI::Broodwar->getPlayers())
 		{
 			if(player == BWAPI::Broodwar->self())
 				continue;
@@ -177,7 +177,7 @@ bool DefaultSquadTask::update()
 		}
 
 		int maxEnemiesSize = 0;
-		for each(std::pair<BWAPI::Force, int> force in enemyForces)
+		for (std::pair<BWAPI::Force, int> force : enemyForces)
 		{
 			if(force.second > maxEnemiesSize)
 				maxEnemiesSize = force.second;
@@ -265,7 +265,7 @@ bool DefaultSquadTask::update()
 			if(mLastGoal.getGoalType() == GoalType::Base && mLastGoal.getActionType() == ActionType::Attack && mLastGoal.getBase()->isEnemyBase())
 				bestBaseToAttack = mLastGoal.getBase();
 
-			for each(Base base in BaseTracker::Instance().getEnemyBases())
+			for (Base base : BaseTracker::Instance().getEnemyBases())
 			{
 				if(!bestBaseToAttack || base->getBuildings().size() < bestBaseToAttack->getBuildings().size())
 					bestBaseToAttack = base;
@@ -364,7 +364,7 @@ void DefaultSquadTask::updateRequirements()
 
 	if(!hasEnded())
 	{
-		for each(Unit unit in UnitTracker::Instance().selectAllUnits())
+		for (Unit unit : UnitTracker::Instance().selectAllUnits())
 		{
 			if(!unit->isCompleted())
 				continue;

@@ -18,7 +18,7 @@ void PlayerTrackerClass::update()
 		std::stringstream ss;
 		ss << "There are ";
 
-		for each(BWAPI::Race race in BWAPI::Races::allRaces())
+		for (BWAPI::Race race : BWAPI::Races::allRaces())
 		{
 			if(isEnemyRace(race))
 				ss << "[" << race.getName() << "] ";
@@ -32,7 +32,7 @@ void PlayerTrackerClass::update()
 		if(!getEnemies().empty())
 		{
 			BWAPI::Broodwar->drawTextScreen(5, y, "Enemies:");
-			for each(Player player in getEnemies())
+			for (Player player : getEnemies())
 			{
 				std::stringstream ss2;
 				ss2 << "[" << player->getRace().getName() << "] " << player->getName();
@@ -44,7 +44,7 @@ void PlayerTrackerClass::update()
 		{
 			y += 10;
 			BWAPI::Broodwar->drawTextScreen(5, y, "Allies:");
-			for each(Player player in getAllies())
+			for (Player player : getAllies())
 			{
 				y+=10;
 				BWAPI::Broodwar->drawTextScreen(15, y, "%s", player->getName().c_str());
@@ -56,7 +56,7 @@ void PlayerTrackerClass::update()
 		updatePlayers();
 
 	UnitGroup allEnemyUnits;
-	for each(Unit unit in UnitTracker::Instance().selectAllEnemy())
+	for (Unit unit : UnitTracker::Instance().selectAllEnemy())
 	{
 		if(unit->accessibility() == AccessType::Lost)
 			continue;
@@ -98,7 +98,7 @@ void PlayerTrackerClass::updatePlayers()
 	mAllies.clear();
 	mEnemyRaceInfo.clear();
 
-	for each(Player player in BWAPI::Broodwar->getPlayers())
+	for (Player player : BWAPI::Broodwar->getPlayers())
 	{
 		if(player->leftGame())
 			continue;
@@ -131,7 +131,7 @@ bool PlayerTrackerClass::playerHasReseached(Player player, BWAPI::TechType tech)
 
 bool PlayerTrackerClass::enemyHasReseached(BWAPI::TechType tech)
 {
-	for each(Player enemy in getEnemies())
+	for (Player enemy : getEnemies())
 	{
 		if(playerHasReseached(enemy, tech))
 			return true;
@@ -146,7 +146,7 @@ std::set<Player> PlayerTrackerClass::getEnemies(Player player) const
 		return mEnemies;
 
 	std::set<Player> enemies;
-	for each(Player enemy in BWAPI::Broodwar->getPlayers())
+	for (Player enemy : BWAPI::Broodwar->getPlayers())
 	{
 		if(player->isEnemy(enemy))
 			enemies.insert(enemy);
@@ -161,7 +161,7 @@ std::set<Player> PlayerTrackerClass::getAllies(Player player) const
 		return mAllies;
 
 	std::set<Player> allies;
-	for each(Player ally in BWAPI::Broodwar->getPlayers())
+	for (Player ally : BWAPI::Broodwar->getPlayers())
 	{
 		if(player->isAlly(ally))
 			allies.insert(ally);
@@ -178,7 +178,7 @@ int PlayerTrackerClass::playerUnitCount(BWAPI::UnitType unit, Player player) con
 int PlayerTrackerClass::enemyUnitCount(BWAPI::UnitType unit, Player player) const
 {
 	int count = 0;
-	for each(Player enemy in getEnemies(player))
+	for (Player enemy : getEnemies(player))
 	{
 		count += playerUnitCount(unit, enemy);
 	}

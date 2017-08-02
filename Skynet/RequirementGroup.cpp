@@ -26,7 +26,7 @@ std::pair<int, int> RequirementGroup::earliestTime()
 	if(recurseForUnitTime(latestTime, mUnitRequirements.begin(), latestTime, Requirement::maxTime, units))
 	{
 		int biggestDelay = 0;
-		// now loop through to find any delay in the execution
+		// now loop through to find any delay : the execution
 		for(std::vector<Requirement>::iterator requirement = mUnitRequirements.begin(); requirement != mUnitRequirements.end(); ++requirement)
 		{
 			int thisDelay = requirement->getDelay();

@@ -13,7 +13,7 @@ void PositionPath::addNode(Position pos)
 void PositionPath::drawPath()
 {
 	Position previousPosition = BWAPI::Positions::None;
-	for each(const Position &pos in path)
+	for (const Position &pos : path)
 	{
 		if(previousPosition != BWAPI::Positions::None)
 			BWAPI::Broodwar->drawLineMap(pos.x, pos.y, previousPosition.x, previousPosition.y, BWAPI::Colors::Yellow);
@@ -26,7 +26,7 @@ int PositionPath::getLength()
 {
 	int totalLength = 0;
 	Position previousPosition = BWAPI::Positions::None;
-	for each(const Position &pos in path)
+	for (const Position &pos : path)
 	{
 		if(previousPosition != BWAPI::Positions::None)
 			totalLength += pos.getApproxDistance(previousPosition);

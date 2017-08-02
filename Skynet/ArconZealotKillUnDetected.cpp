@@ -14,7 +14,7 @@ bool ArconZealotKillUnDetected::update(const Goal &squadGoal, const UnitGroup &s
 
 	Unit lurker;
 	int lurkerDistance = std::numeric_limits<int>::max();
-	for each(Unit unit in UnitTracker::Instance().selectAllEnemy())
+      for (Unit unit : UnitTracker::Instance().selectAllEnemy())
 	{
 		if(unit->exists() && !unit->isDetected() && (unit->isCloaked() || unit->getType().hasPermanentCloak() || (unit->getType() == BWAPI::UnitTypes::Zerg_Lurker && unit->isBurrowed())))
 		{

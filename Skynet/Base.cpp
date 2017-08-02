@@ -36,7 +36,7 @@ BaseClass::BaseClass(TilePosition position, const UnitGroup &resources, Region r
 	, mIsContested(false)
 	, mTechBuildings(0)
 {
-	for each(Unit resource in resources)
+	for (Unit resource : resources)
 	{
 		if(resource->getType() == BWAPI::UnitTypes::Resource_Mineral_Field)
 			mMinerals.insert(resource);
@@ -50,12 +50,12 @@ void BaseClass::update()
 	if(!mMinedOut)
 	{
 		bool noGas = true;
-		for each(Unit geyser in mGeysers)
+		for (Unit geyser : mGeysers)
 		{
 			if(geyser->getResources() > 0)
 				noGas = false;
 		}
-		for each(Unit geyser in mRefineries)
+		for (Unit geyser : mRefineries)
 		{
 			if(geyser->getResources() > 0)
 				noGas = false;
@@ -78,14 +78,14 @@ void BaseClass::update()
 	}
 
 	// TODO: Move this to the base manager and make a generic add building and remove building
-	for each(Unit unit in mLiftedBuildings)
+	for (Unit unit : mLiftedBuildings)
 	{
 		if(!unit->isLifted() && unit->exists())
 			addUnit(unit);
 	}
 
 	mLiftedBuildings.clear();
-	for each(Unit unit in UnitTracker::Instance().getAllUnits())
+	for (Unit unit : UnitTracker::Instance().getAllUnits())
 	{
 		if(unit->getType().isBuilding() && unit->isLifted())
 			mLiftedBuildings.insert(unit);
@@ -98,7 +98,7 @@ void BaseClass::update()
 
 	if(mPlayer && mPlayer != BWAPI::Broodwar->neutral())
 	{
-		for each(Unit defender in UnitTracker::Instance().selectAllUnits(mPlayer))
+		for (Unit defender : UnitTracker::Instance().selectAllUnits(mPlayer))
 		{
 			if(!defender->isCompleted())
 				continue;
@@ -121,7 +121,7 @@ void BaseClass::update()
 			mAllDefenders.insert(defender);
 		}
 
-		for each(Unit enemy in UnitTracker::Instance().selectAllEnemy(mPlayer))
+		for (Unit enemy : UnitTracker::Instance().selectAllEnemy(mPlayer))
 		{
 			if(enemy->getType().isBuilding() && !enemy->isLifted())
 				continue;
@@ -140,7 +140,7 @@ void BaseClass::update()
 
 			const int maxRange = std::max(48, 24 + std::max(enemy->getGroundWeaponMaxRange(), enemy->getAirWeaponMaxRange()));
 
-			for each(Unit building in mBuildings)
+			for (Unit building : mBuildings)
 			{
 				if(enemy->getDistance(building) <= maxRange)
 				{
@@ -312,26 +312,26 @@ void BaseClass::drawDebugInfo() const
 	if(showtitle)
 		BWAPI::Broodwar->drawTextMap(mCenterPosition.x + 60, mCenterPosition.y - 40, "Base Info:");
 
-	for each(Unit unit in mAllThreats)
+	for (Unit unit : mAllThreats)
 	{
 		BWAPI::Broodwar->drawLineMap(unit->getPosition().x, unit->getPosition().y, mCenterPosition.x, mCenterPosition.y, BWAPI::Colors::Red);
 	}
-	for each(Unit building in mBuildings)
+	for (Unit building : mBuildings)
 	{
 		BWAPI::Broodwar->drawLine(BWAPI::CoordinateType::Map, building->getPosition().x, building->getPosition().y, mCenterPosition.x, mCenterPosition.y, building->getPlayer()->getColor());
 	}
 
-	for each(Unit mineral in mMinerals)
+	for (Unit mineral : mMinerals)
 	{
 		BWAPI::Broodwar->drawCircleMap(mineral->getPosition().x, mineral->getPosition().y, 32, BWAPI::Colors::Blue);
 		BWAPI::Broodwar->drawLineMap(mineral->getPosition().x, mineral->getPosition().y, mCenterPosition.x, mCenterPosition.y, BWAPI::Colors::Blue);
 	}
-	for each(Unit geyser in mGeysers)
+	for (Unit geyser : mGeysers)
 	{
 		BWAPI::Broodwar->drawCircleMap(geyser->getPosition().x, geyser->getPosition().y, 32, BWAPI::Colors::Green);
 		BWAPI::Broodwar->drawLineMap(geyser->getPosition().x, geyser->getPosition().y, mCenterPosition.x, mCenterPosition.y, BWAPI::Colors::Green);
 	}
-	for each(Unit geyser in mRefineries)
+	for (Unit geyser : mRefineries)
 	{
 		BWAPI::Broodwar->drawCircleMap(geyser->getPosition().x, geyser->getPosition().y, 32, BWAPI::Colors::Orange);
 		BWAPI::Broodwar->drawLineMap(geyser->getPosition().x, geyser->getPosition().y, mCenterPosition.x, mCenterPosition.y, BWAPI::Colors::Green);
@@ -343,7 +343,7 @@ Unit BaseClass::getClosestEnemyBuilding(Position pos)
 	int minDist = std::numeric_limits<int>::max();
 	Unit bestBuilding;
 
-	for each(Unit unit in mBuildings)
+	for (Unit unit : mBuildings)
 	{
 		if(!BWAPI::Broodwar->self()->isEnemy(unit->getPlayer()))
 			continue;
@@ -375,7 +375,7 @@ void BaseClass::updatePlayer()
 		{
 			mPlayer = NULL;
 			int number = 0;
-			for each(std::pair<Player, int> pair in mPlayerBuildingNumbers)
+			for (std::pair<Player, int> pair : mPlayerBuildingNumbers)
 			{
 				if(pair.second > number)
 				{

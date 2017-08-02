@@ -23,11 +23,11 @@ TaskManagerClass::TaskManagerClass()
 
 void TaskManagerClass::update()
 {
-	for each(const TaskPointer &task in mTasks)
+	for (const TaskPointer &task : mTasks)
 	{
 		if(task->preUpdate())
 		{
-			for each(Unit unit in task->getFinishedUnits())
+			for (Unit unit : task->getFinishedUnits())
 				removeTask(unit);
 		}
 	}
@@ -36,7 +36,7 @@ void TaskManagerClass::update()
 	ResourceTracker::Instance().reset();
 	mReservedUnits.clear();
 
-	for each(TaskType type in getPriorityList())
+	for (TaskType type : getPriorityList())
 	{
 		std::map<TaskType, std::list<TaskPointer>>::iterator l = mTypeTasks.find(type);
 
@@ -217,7 +217,7 @@ void TaskManagerClass::giveTask(Unit unit)
 	TaskPointer bestTask;
 	int priority = 0;
 
-	for each(TaskPointer task in mTasks)
+	for (TaskPointer task : mTasks)
 	{
 		if(task->waitingForUnit(unit))
 		{
@@ -290,7 +290,7 @@ std::map<int, int> TaskManagerClass::earliestFreeTimes(Unit unit, int priority, 
 		// We can move this block if we are higher priority
 		bool canMoveThisBlock = priority > i->second.first;
 
-		// How long the current block of time we have to fit in is
+		// How long the current block of time we have to fit : is
 		currentFreeBlockLength += i->first - lastBlockEnd;
 		
 		// How long will this task last
@@ -375,7 +375,7 @@ bool TaskManagerClass::updateRequirement(TaskPointer task, RequirementGroup requ
 
 		if(earliestTime.first - earliestTime.second <= BWAPI::Broodwar->getFrameCount())
 		{
-			for each(Unit unit in requirement.getUnits())
+			for (Unit unit : requirement.getUnits())
 			{
 				TaskPointer oldTask = mUnitTasks[unit->getType()][unit];
 				oldTask->returnUnit(unit);

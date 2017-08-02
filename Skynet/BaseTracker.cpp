@@ -15,7 +15,7 @@ Base BaseTrackerClass::createBase(std::set<TilePosition> tiles, Region region, b
 	else
 		base = Base(new BaseClass(region, tiles, startLocation));
 
-	for each(TilePosition tile in tiles)
+	for (TilePosition tile : tiles)
 		mTileToBase[tile] = base;
 	
 	mBases.insert(base);
@@ -25,7 +25,7 @@ Base BaseTrackerClass::createBase(std::set<TilePosition> tiles, Region region, b
 
 void BaseTrackerClass::update()
 {
-	for each(Base base in mBases)
+	for (Base base : mBases)
 	{
 		//TODO: track flying buildings, they can move between bases
 		base->update();
@@ -36,7 +36,7 @@ void BaseTrackerClass::update()
 
 void BaseTrackerClass::onDiscover(Unit unit)
 {
-	for each(Base base in mBases)
+	for (Base base : mBases)
 	{
 		base->onDiscover(unit);
 	}
@@ -44,7 +44,7 @@ void BaseTrackerClass::onDiscover(Unit unit)
 
 void BaseTrackerClass::onMorphRenegade(Unit unit, Player previousPlayer, BWAPI::UnitType previousType)
 {
-	for each(Base base in mBases)
+	for (Base base : mBases)
 	{
 		base->onMorphRenegade(unit, previousPlayer, previousType);
 	}
@@ -52,7 +52,7 @@ void BaseTrackerClass::onMorphRenegade(Unit unit, Player previousPlayer, BWAPI::
 
 void BaseTrackerClass::onDestroy(Unit unit)
 {
-	for each(Base base in mBases)
+	for (Base base : mBases)
 	{
 		base->onDestroy(unit);
 	}
@@ -62,7 +62,7 @@ std::set<Base> BaseTrackerClass::getResourceBases()
 {
 	std::set<Base> bases;
 
-	for each(Base base in mBases)
+	for (Base base : mBases)
 	{
 		if(!base->isMinedOut())
 			bases.insert(base);
@@ -75,7 +75,7 @@ std::set<Base> BaseTrackerClass::getActiveBases(bool activeInFuture, Player play
 {
 	std::set<Base> bases;
 
-	for each(Base base in mBases)
+	for (Base base : mBases)
 	{
 		if(base->isActive(activeInFuture) && base->getPlayer() == player)
 			bases.insert(base);
@@ -88,7 +88,7 @@ std::set<Base> BaseTrackerClass::getEnemyActiveBases(bool activeInFuture)
 {
 	std::set<Base> bases;
 
-	for each(Base base in mBases)
+	for (Base base : mBases)
 	{
 		if(base->isActive(activeInFuture) && BWAPI::Broodwar->self()->isEnemy(base->getPlayer()))
 			bases.insert(base);
@@ -101,7 +101,7 @@ std::set<Base> BaseTrackerClass::getEnemyBases()
 {
 	std::set<Base> bases;
 
-	for each(Base base in mBases)
+	for (Base base : mBases)
 	{
 		if(BWAPI::Broodwar->self()->isEnemy(base->getPlayer()))
 			bases.insert(base);
@@ -114,7 +114,7 @@ std::set<Base> BaseTrackerClass::getAllyBases()
 {
 	std::set<Base> bases;
 
-	for each(Base base in mBases)
+	for (Base base : mBases)
 	{
 		if(BWAPI::Broodwar->self()->isAlly(base->getPlayer()))
 			bases.insert(base);
@@ -127,7 +127,7 @@ std::set<Base> BaseTrackerClass::getPlayerBases(Player player)
 {
 	std::set<Base> bases;
 
-	for each(Base base in mBases)
+	for (Base base : mBases)
 	{
 		if(base->getPlayer() == player)
 			bases.insert(base);
@@ -140,7 +140,7 @@ std::set<Base> BaseTrackerClass::getImportantBases(Player player)
 {
 	std::set<Base> bases;
 
-	for each(Base base in mBases)
+	for (Base base : mBases)
 	{
 		if(base->getPlayer() == player && (base->isActive(true) || base->getNumberOfTechBuildings() >= 2))
 			bases.insert(base);
@@ -153,7 +153,7 @@ std::set<Base> BaseTrackerClass::getEnemyImportantBases()
 {
 	std::set<Base> bases;
 
-	for each(Base base in mBases)
+	for (Base base : mBases)
 	{
 		if(BWAPI::Broodwar->self()->isEnemy(base->getPlayer()) && (base->isActive(true) || base->getNumberOfTechBuildings() > 0))
 			bases.insert(base);

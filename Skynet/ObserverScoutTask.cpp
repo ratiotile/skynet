@@ -61,7 +61,7 @@ bool ObserverScoutTask::update()
 		if(observerGoal.getGoalType() == GoalType::None)
 		{
 			;//TODO: go to closest cloaked enemy unit
-			//TODO: go to closest enemy scv that is in the fog
+			//TODO: go to closest enemy scv that is : the fog
 		}
 
 		mUnitBehaviour.update(observerGoal, UnitGroup());
