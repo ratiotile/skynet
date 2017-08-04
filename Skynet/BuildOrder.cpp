@@ -20,55 +20,53 @@ BuildOrder::BuildOrder(BWAPI::Race race, BuildOrderID id, std::string name)
 {
 }
 
-std::list<CallBack> nolist;
-
-int BuildOrder::addItem(BWAPI::UnitType type, std::list<CallBack> &callBacks, int count, BuildingLocation position)
+int BuildOrder::addItem(BWAPI::UnitType type, std::list<CallBack> callBacks, int count, BuildingLocation position)
 {
   return addItem(type, TaskType::BuildOrder, callBacks, count, position);
 }
 
-int BuildOrder::addItem(BWAPI::TechType type, std::list<CallBack> &callBacks)
+int BuildOrder::addItem(BWAPI::TechType type, std::list<CallBack> callBacks)
 {
   return addItem(type, TaskType::BuildOrder, callBacks);
 }
 
-int BuildOrder::addItem(BWAPI::UpgradeType type, int level, std::list<CallBack> &callBacks)
+int BuildOrder::addItem(BWAPI::UpgradeType type, int level, std::list<CallBack> callBacks)
 {
   return addItem(type, level, TaskType::BuildOrder, callBacks);
 }
 
 int BuildOrder::addItem(BWAPI::UnitType type, int count, BuildingLocation position, TaskType taskType)
 {
-      return addItem(type, taskType, nolist, count, position);
+      return addItem(type, taskType, std::list<CallBack>(), count, position);
 }
 
 int BuildOrder::addItem(BWAPI::UnitType type, int count, TaskType taskType, BuildingLocation position)
 {
-      return addItem(type, taskType, nolist, count, position);
+      return addItem(type, taskType, std::list<CallBack>(), count, position);
 }
 
-int BuildOrder::addItem(BWAPI::UnitType type, TaskType taskType, std::list<CallBack> &callBacks, int count, BuildingLocation position)
+int BuildOrder::addItem(BWAPI::UnitType type, TaskType taskType, std::list<CallBack> callBacks, int count, BuildingLocation position)
 {
   mItems.push_back(BuildItem(type, count, ++mItemCounter, taskType, position, callBacks));
 
   return mItemCounter;
 }
 
-int BuildOrder::addItem(BWAPI::TechType type, TaskType taskType, std::list<CallBack> &callBacks)
+int BuildOrder::addItem(BWAPI::TechType type, TaskType taskType, std::list<CallBack> callBacks)
 {
   mItems.push_back(BuildItem(type, ++mItemCounter, taskType, callBacks));
 
   return mItemCounter;
 }
 
-int BuildOrder::addItem(BWAPI::UpgradeType type, int level, TaskType taskType, std::list<CallBack> &callBacks)
+int BuildOrder::addItem(BWAPI::UpgradeType type, int level, TaskType taskType, std::list<CallBack> callBacks)
 {
   mItems.push_back(BuildItem(type, level, ++mItemCounter, taskType, callBacks));
 
   return mItemCounter;
 }
 
-int BuildOrder::addOrder(Order orderType, std::list<CallBack> &callBacks)
+int BuildOrder::addOrder(Order orderType, std::list<CallBack> callBacks)
 {
   mOrders.push_back(OrderItem(orderType, ++mItemCounter, callBacks));
 
@@ -90,7 +88,7 @@ void BuildOrder::addSquad(SquadType type, int count)
   mSquads[type] += count;
 }
 
-void BuildOrder::addArmyBehaviour(ArmyBehaviour armyBehaiour, std::list<CallBack> &callBacks)
+void BuildOrder::addArmyBehaviour(ArmyBehaviour armyBehaiour, std::list<CallBack> callBacks)
 {
   mArmyBehaviours.push_back(ArmyBehaviourItem(armyBehaiour, callBacks));
 }
@@ -123,9 +121,9 @@ float BuildOrder::getWinRate(BuildOrderID currentBuild) const
   return winRate;
 }
 
-std::list<CallBack>& CB(int buildID, CallBackType type, std::list<CallBack> &cb)
+std::list<CallBack> CB(int buildID, CallBackType type, std::list<CallBack> cb)
 {
-      if (&cb != &nolist) cb.push_back(CallBack(buildID, type));
+  cb.push_back(CallBack(buildID, type));
 
   return cb;
 }

@@ -1,3 +1,4 @@
+#pragma once
 
 #include "Interface.h"
 #include <deque>
@@ -80,7 +81,7 @@ private:
 class BuildItem
 {
 public:
-  BuildItem(BWAPI::UnitType unitType, int count, int buildID, TaskType taskType, BuildingLocation location, const std::list<CallBack> &callBacks)
+  BuildItem(BWAPI::UnitType unitType, int count, int buildID, TaskType taskType, BuildingLocation location, const std::list<CallBack> callBacks)
     : mUnitType(unitType)
     , mTechType(BWAPI::TechTypes::None)
     , mUpgradeType(BWAPI::UpgradeTypes::None)
@@ -91,7 +92,7 @@ public:
     , mCallBacks(callBacks)
   {}
 
-  BuildItem(BWAPI::TechType techType, int buildID, TaskType taskType, const std::list<CallBack> &callBacks)
+  BuildItem(BWAPI::TechType techType, int buildID, TaskType taskType, const std::list<CallBack> callBacks)
     : mUnitType(BWAPI::UnitTypes::None)
     , mTechType(techType)
     , mUpgradeType(BWAPI::UpgradeTypes::None)
@@ -102,7 +103,7 @@ public:
     , mCallBacks(callBacks)
   {}
 
-  BuildItem(BWAPI::UpgradeType upgradeType, int level, int buildID, TaskType taskType, const std::list<CallBack> &callBacks)
+  BuildItem(BWAPI::UpgradeType upgradeType, int level, int buildID, TaskType taskType, const std::list<CallBack> callBacks)
     : mUnitType(BWAPI::UnitTypes::None)
     , mTechType(BWAPI::TechTypes::None)
     , mUpgradeType(upgradeType)
@@ -160,7 +161,7 @@ private:
 class OrderItem
 {
 public:
-  OrderItem(Order type, int ID, const std::list<CallBack> &callBacks)
+  OrderItem(Order type, int ID, const std::list<CallBack> callBacks)
     : mType(type)
     , mID(ID)
     , mCallbacks(callBacks)
@@ -192,7 +193,7 @@ private:
 class ArmyBehaviourItem
 {
 public:
-  ArmyBehaviourItem(ArmyBehaviour armyBehaiour, const std::list<CallBack> &callBacks)
+  ArmyBehaviourItem(ArmyBehaviour armyBehaiour, const std::list<CallBack> callBacks)
     : mArmyBehaiour(armyBehaiour)
     , mCallbacks(callBacks)
   {}
@@ -248,9 +249,7 @@ struct BuildOrderIDDef
 };
 typedef SafeEnum<BuildOrderIDDef> BuildOrderID;
 
-extern std::list<CallBack> nolist;
-
-std::list<CallBack>& CB(int buildID, CallBackType type, std::list<CallBack> &cb = nolist);
+std::list<CallBack> CB(int buildID, CallBackType type, std::list<CallBack> cb = std::list<CallBack>());
 
 class UnitToProduce
 {
@@ -325,18 +324,18 @@ public:
   BuildOrder(BuildOrderID id = BuildOrderID::None, std::string name = "None");
   BuildOrder(BWAPI::Race race, BuildOrderID id, std::string name);
 
-      int addItem(BWAPI::UnitType type, std::list<CallBack> &callBacks = nolist, int count = 1, BuildingLocation position = BuildingLocation::Base);
-      int addItem(BWAPI::TechType type, std::list<CallBack> &callBacks = nolist);
-      int addItem(BWAPI::UpgradeType type, int level = 1, std::list<CallBack> &callBacks = nolist);
+  int addItem(BWAPI::UnitType type, std::list<CallBack> callBacks = std::list<CallBack>(), int count = 1, BuildingLocation position = BuildingLocation::Base);
+  int addItem(BWAPI::TechType type, std::list<CallBack> callBacks = std::list<CallBack>());
+  int addItem(BWAPI::UpgradeType type, int level = 1, std::list<CallBack> callBacks = std::list<CallBack>());
 
   int addItem(BWAPI::UnitType type, int count, BuildingLocation position = BuildingLocation::Base, TaskType taskType = TaskType::BuildOrder);
   int addItem(BWAPI::UnitType type, int count, TaskType taskType, BuildingLocation position = BuildingLocation::Base);
 
-      int addItem(BWAPI::UnitType type, TaskType taskType, std::list<CallBack> &callBacks = nolist, int count = 1, BuildingLocation position = BuildingLocation::Base);
-      int addItem(BWAPI::TechType type, TaskType taskType, std::list<CallBack> &callBacks = nolist);
-      int addItem(BWAPI::UpgradeType type, int level, TaskType taskType, std::list<CallBack> &callBacks = nolist);
+  int addItem(BWAPI::UnitType type, TaskType taskType, std::list<CallBack> callBacks = std::list<CallBack>(), int count = 1, BuildingLocation position = BuildingLocation::Base);
+  int addItem(BWAPI::TechType type, TaskType taskType, std::list<CallBack> callBacks = std::list<CallBack>());
+  int addItem(BWAPI::UpgradeType type, int level, TaskType taskType, std::list<CallBack> callBacks = std::list<CallBack>());
 
-      int addOrder(Order orderType, std::list<CallBack> &callBacks = nolist);
+  int addOrder(Order orderType, std::list<CallBack> callBacks = std::list<CallBack>());
 
   void addProduce(BWAPI::UnitType type, int weight, int priority = 100, const Condition &unitCond = Condition(ConditionTest::None, true), const Condition &factoryCond = Condition(ConditionTest::None, true));
 
@@ -344,7 +343,7 @@ public:
 
   void addSquad(SquadType type, int count = 1);
 
-      void addArmyBehaviour(ArmyBehaviour armyBehaiour, std::list<CallBack> &callBacks = nolist);
+  void addArmyBehaviour(ArmyBehaviour armyBehaiour, std::list<CallBack> callBacks = std::list<CallBack>());
 
   void setStartingCondition(Condition condition);
 
